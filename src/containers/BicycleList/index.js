@@ -14,6 +14,7 @@ class BicycleList extends React.PureComponent {
     return <View style={{ flex: 1 }}>
       <FlatList
         data={this.props.listOfBicycles}
+        keyExtractor={(i, index) => String(index)}
         renderItem={i => <View style={{ width: '100%', height: 50, borderWidth: 1 }}/>}
       />
     </View>
