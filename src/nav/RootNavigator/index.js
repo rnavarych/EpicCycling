@@ -8,8 +8,18 @@ import BicycleDetails from '../../containers/BicycleDetails'
 export const createRootNavigator = () => {
   return createAppContainer(
     createStackNavigator({
-      MapScreen: MapContainer,
-      BicycleListScreen: BicycleList,
+      MapScreen: {
+        screen: MapContainer,
+        navigationOptions: {
+          title: 'Stations'
+        }
+      },
+      BicycleListScreen: {
+        screen: BicycleList,
+        navigationOptions: {
+          title: 'Station Details'
+        }
+      },
       //BicycleDetailsScreen: BicycleDetails
     },
     {
