@@ -70,7 +70,11 @@ export const apiMiddleware = store => next => action => {
     if (__DEV__) {
 
       if (requestType === actionTypes.LIST_OF_STATIONS_REQUEST) {
-        next({ type: successType, result: { data: server100 } });
+        next({ type: successType, result: { data: server100.map(
+            item => ({
+                ...item,
+                amount_of_bicycle_available: Math.floor(Math.random() * 100)})
+        ) } });
         return
       }
       if (requestType === actionTypes.LIST_OF_BICYCLES_REQUEST) {

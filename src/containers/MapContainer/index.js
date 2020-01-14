@@ -37,11 +37,11 @@ class MapContainer extends React.PureComponent {
           >
             <Callout tooltip>
               <View style={styles.calloutContainer}>
-                <Text style={styles.bicyclesAmountText}>140</Text>
+                <Text style={styles.bicyclesAmountText}>{station.amount_of_bicycle_available}</Text>
                 <CalloutSubview
                   style={styles.calloutButton} 
                   onPress={() => this.props.navigation.navigate('BicycleListScreen')}>
-                  <Text>See Available Bicycles</Text>
+                  <Text style={{ paddingHorizontal: 10 }}>See Details</Text>
                 </CalloutSubview>
               </View>
             </Callout>
