@@ -8,7 +8,6 @@ class BicycleList extends React.PureComponent {
 
   componentDidMount() {
     const stationID = this.props.navigation.getParam('stationID')
-    console.log(stationID)
     this.props.getListOfBicycles(stationID)
   }
 

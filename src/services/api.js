@@ -75,8 +75,6 @@ export const apiMiddleware = store => next => action => {
       }
       if (requestType === actionTypes.LIST_OF_BICYCLES_REQUEST) {
         const stationID = endpoint.split('/').pop()
-        console.log('endpoint', endpoint)
-        console.log('stationID', stationID)
 
         next({ type: successType, result: 
             { 
