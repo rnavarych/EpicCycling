@@ -9,7 +9,7 @@ export const createRootNavigator = () => {
   return createAppContainer(
     createStackNavigator({
       MapScreen: MapContainer,
-      //BicycleListScreen: BicycleList,
+      BicycleListScreen: BicycleList,
       //BicycleDetailsScreen: BicycleDetails
     },
     {

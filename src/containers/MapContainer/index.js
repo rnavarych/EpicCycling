@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import MapView, { PROVIDER_GOOGLE, Marker, Callout, CalloutSubview } from 'react-native-maps'
 import { connect } from 'react-redux'
 
 import { server100 } from '../../services/mockdata'
@@ -18,16 +18,35 @@ class MapContainer extends React.PureComponent {
           longitudeDelta: 0.0421,
         }}
       >
-        {server100.map((marker, index) => (
+        {server100.map((station, index) => (
           <Marker
             key={index}
             coordinate={{
-              latitude: parseFloat(marker.latitude),
-              longitude: parseFloat(marker.longitude)
+              latitude: parseFloat(station.latitude),
+              longitude: parseFloat(station.longitude)
             }}
-            title={marker.the_geom.coordinates.title}
-            description={marker.the_geom.map_label}
-          />
+            title={station.the_geom.coordinates.title}
+            description={station.the_geom.map_label}
+          >
+            <Callout tooltip>
+              <View style={{ 
+                borderWidth: 1,
+                borderColor: '#f9f9f9',
+                width: 150, 
+                height: 70, 
+                justifyContent: 'center', 
+                backgroundColor: 'white' , 
+                borderRadius: 10 
+                }}>
+                <Text style={{ marginBottom: 5, fontSize: 20, alignSelf: 'center' }}>140</Text>
+                <CalloutSubview
+                  style={{ alignSelf: 'center', backgroundColor: '#a0ee90', borderRadius: 5 }} 
+                  onPress={() => this.props.navigation.navigate('BicycleListScreen')}>
+                  <Text>See Available Bicycles</Text>
+                </CalloutSubview>
+              </View>
+            </Callout>
+          </Marker>
         ))}
       </MapView>
     )
