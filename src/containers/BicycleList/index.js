@@ -7,7 +7,9 @@ import { getListOfBicycles } from '../../actions/bicycles'
 class BicycleList extends React.PureComponent {
 
   componentDidMount() {
-    this.props.getListOfBicycles()
+    const stationID = this.props.navigation.getParam('stationID')
+    console.log(stationID)
+    this.props.getListOfBicycles(stationID)
   }
 
   render() {
@@ -30,7 +32,7 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getListOfBicycles: () => dispatch(getListOfBicycles())
+  getListOfBicycles: (id) => dispatch(getListOfBicycles(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BicycleList)

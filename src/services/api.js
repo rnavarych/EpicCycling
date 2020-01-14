@@ -2,7 +2,7 @@ import { BASE_URL } from '../configs';
 import { REQUEST_TIMEOUT } from '../configs/settings';
 
 import * as actionTypes  from '../constants/actionTypes';
-import { server100 } from '../services/mockdata';
+import { server100, stations } from '../services/mockdata';
 
 async function getFetchAction(endpoint, method, body) {
     let headers = {
@@ -70,21 +70,19 @@ export const apiMiddleware = store => next => action => {
     if (__DEV__) {
 
       if (requestType === actionTypes.LIST_OF_STATIONS_REQUEST) {
-        next({ type: successType, result: { data: server100.map(
-            item => 
-            {   
-                const total_amount = Math.floor(Math.random() * 100)
-                return ({
-                    ...item,
-                    total_amount_of_bicycles: total_amount,
-                    amount_of_bicycle_available: Math.floor(total_amount * Math.random())
-                })
-            }
-        ) } });
+        next({ type: successType, result: { data: stations } });
         return
       }
       if (requestType === actionTypes.LIST_OF_BICYCLES_REQUEST) {
-        next({ type: successType, result: { data: server100 } });
+        const stationID = endpoint.split('/').pop()
+        console.log('endpoint', endpoint)
+        console.log('stationID', stationID)
+
+        next({ type: successType, result: 
+            { 
+                data: stations.find(station => station.asset_id === stationID).bicycles
+            }
+        });
         return
       }
 

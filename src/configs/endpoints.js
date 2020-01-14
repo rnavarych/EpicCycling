@@ -1,0 +1,1 @@
+export const getStationInfo = (id) => `/stations/${id}`

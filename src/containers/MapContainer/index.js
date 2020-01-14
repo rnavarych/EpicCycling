@@ -41,7 +41,7 @@ class MapContainer extends React.PureComponent {
                 <Text style={styles.bicyclesAmountText}>Available: {station.amount_of_bicycle_available}</Text>
                 <CalloutSubview
                   style={styles.calloutButton} 
-                  onPress={() => this.props.navigation.navigate('BicycleListScreen')}>
+                  onPress={() => this.props.navigation.navigate('BicycleListScreen', { stationID: __DEV__ ? station.asset_id : station.id })}>
                   <Text style={{ paddingHorizontal: 10 }}>See Details</Text>
                 </CalloutSubview>
               </View>
