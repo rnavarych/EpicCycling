@@ -71,9 +71,15 @@ export const apiMiddleware = store => next => action => {
 
       if (requestType === actionTypes.LIST_OF_STATIONS_REQUEST) {
         next({ type: successType, result: { data: server100.map(
-            item => ({
-                ...item,
-                amount_of_bicycle_available: Math.floor(Math.random() * 100)})
+            item => 
+            {   
+                const total_amount = Math.floor(Math.random() * 100)
+                return ({
+                    ...item,
+                    total_amount_of_bicycles: total_amount,
+                    amount_of_bicycle_available: Math.floor(total_amount * Math.random())
+                })
+            }
         ) } });
         return
       }

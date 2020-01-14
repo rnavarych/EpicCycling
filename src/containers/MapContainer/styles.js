@@ -4,8 +4,8 @@ const styles = StyleSheet.create({
 	calloutContainer: {
 		borderWidth: 1,
     borderColor: '#f9f9f9',
-    width: 150, 
-    height: 70, 
+    width: 180, 
+    height: 100, 
     justifyContent: 'center', 
     backgroundColor: 'white' , 
     borderRadius: 10 

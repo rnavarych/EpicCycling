@@ -37,7 +37,8 @@ class MapContainer extends React.PureComponent {
           >
             <Callout tooltip>
               <View style={styles.calloutContainer}>
-                <Text style={styles.bicyclesAmountText}>{station.amount_of_bicycle_available}</Text>
+                <Text style={styles.bicyclesAmountText}>Total: {station.total_amount_of_bicycles}</Text>
+                <Text style={styles.bicyclesAmountText}>Available: {station.amount_of_bicycle_available}</Text>
                 <CalloutSubview
                   style={styles.calloutButton} 
                   onPress={() => this.props.navigation.navigate('BicycleListScreen')}>
