@@ -4,6 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Callout, CalloutSubview } from 'react
 import { connect } from 'react-redux'
 
 import { server100 } from '../../services/mockdata'
+import styles from './styles'
 
 class MapContainer extends React.PureComponent {
   render() {
@@ -29,18 +30,10 @@ class MapContainer extends React.PureComponent {
             description={station.the_geom.map_label}
           >
             <Callout tooltip>
-              <View style={{ 
-                borderWidth: 1,
-                borderColor: '#f9f9f9',
-                width: 150, 
-                height: 70, 
-                justifyContent: 'center', 
-                backgroundColor: 'white' , 
-                borderRadius: 10 
-                }}>
-                <Text style={{ marginBottom: 5, fontSize: 20, alignSelf: 'center' }}>140</Text>
+              <View style={styles.calloutContainer}>
+                <Text style={styles.bicyclesAmountText}>140</Text>
                 <CalloutSubview
-                  style={{ alignSelf: 'center', backgroundColor: '#a0ee90', borderRadius: 5 }} 
+                  style={styles.calloutButton} 
                   onPress={() => this.props.navigation.navigate('BicycleListScreen')}>
                   <Text>See Available Bicycles</Text>
                 </CalloutSubview>
