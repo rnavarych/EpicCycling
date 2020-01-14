@@ -1,15 +1,13 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React from 'react'
+import { createRootNavigator } from './nav/RootNavigator'
 
-const App = () => {
-  return null
+class App extends React.PureComponent {
+  render() {
+    const RootNavigator = createRootNavigator()
+
+    return <RootNavigator />
+  }
 }
 
 export default App;
+
