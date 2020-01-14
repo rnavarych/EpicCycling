@@ -1,6 +1,9 @@
 import { BASE_URL } from '../configs';
 import { REQUEST_TIMEOUT } from '../configs/settings';
 
+import * as actionTypes  from '../constants/actionTypes';
+import { server100 } from '../services/mockdata';
+
 async function getFetchAction(endpoint, method, body) {
     let headers = {
         'Accept': 'application/json',
@@ -62,23 +65,38 @@ export const apiMiddleware = store => next => action => {
     const [requestType, successType, failureType] = types;
 
     next(Object.assign({}, { type: requestType }));
-    return callApi(endpoint, method, body)
-        .then(response => {
-                const result = response;
-                next(Object.assign({}, { type: successType, result }));
-                return result;
+
+
+    if (__DEV__) {
+
+      if (requestType === actionTypes.LIST_OF_STATIONS_REQUEST) {
+        next({ type: successType, result: { data: server100 } });
+        return
+      }
+      if (requestType === actionTypes.LIST_OF_BICYCLES_REQUEST) {
+        next({ type: successType, result: { data: server100 } });
+        return
+      }
+
+    } else {
+      return callApi(endpoint, method, body)
+      .then(response => {
+          const result = response;
+          next(Object.assign({}, { type: successType, result }));
+          return result;
+        },
+        (error) => {
+          console.log(error)
+          next(Object.assign(
+            {},
+            {
+              type: failureType,
+              status: 'ERROR',
+              errorCode: error.code,
+              description: error.data
             },
-            (error) => {
-                console.log(error)
-                next(Object.assign(
-                    {},
-                    {
-                        type: failureType,
-                        status: 'ERROR',
-                        errorCode: error.code,
-                        description: error.data
-                    },
-                ));
-            },
-        );
+          ));
+        },
+      );
+    }
 };

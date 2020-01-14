@@ -1,12 +1,18 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, CalloutSubview } from 'react-native-maps'
 import { connect } from 'react-redux'
 
 import { server100 } from '../../services/mockdata'
+import { getListOfStations } from '../../actions/stations'
 import styles from './styles'
 
 class MapContainer extends React.PureComponent {
+
+  componentDidMount() {
+    this.props.getListOfStations()
+  }
+
   render() {
     return (
       <MapView
@@ -19,7 +25,7 @@ class MapContainer extends React.PureComponent {
           longitudeDelta: 0.0421,
         }}
       >
-        {server100.map((station, index) => (
+        {this.props.listOfStations.map((station, index) => (
           <Marker
             key={index}
             coordinate={{
@@ -47,13 +53,15 @@ class MapContainer extends React.PureComponent {
 }
 
 const mapStateToProps = ({
-  
+  stations: {
+    listOfStations
+  }
 }) => ({
-  
+  listOfStations
 });
 
 const mapDispatchToProps = dispatch => ({
-  
+  getListOfStations: () => dispatch(getListOfStations())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapContainer)
