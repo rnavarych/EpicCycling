@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 
 import styles from './styles';
+import { strings } from '../../I18n'
 
 const DetailsCard = (props) => {
   const { bicycle } = props
@@ -9,9 +10,9 @@ const DetailsCard = (props) => {
     <View style={styles.container}>
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.textInfoContainer}>
-          <Text>Status: {bicycle.available ? 'Available' : 'Not available'}</Text>
-          <Text>Model: {bicycle.model}</Text>
-          <Text>Battery: {bicycle.battery}%</Text>
+          <Text>{strings('status')}: {bicycle.available ? strings('available') : strings('notAvailable')}</Text>
+          <Text>{strings('model')}: {bicycle.model}</Text>
+          <Text>{strings('battery')}: {bicycle.battery}%</Text>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -21,7 +22,7 @@ const DetailsCard = (props) => {
               styles.buttonStyle
             ]}
             onPress={() => {}}>
-              <Text>Book</Text>
+              <Text>{strings('book')}</Text>
           </TouchableOpacity>
         </View>
       </View>

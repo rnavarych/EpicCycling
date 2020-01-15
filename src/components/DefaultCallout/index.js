@@ -3,6 +3,7 @@ import { View, Text } from 'react-native'
 import { Callout, CalloutSubview } from 'react-native-maps'
 
 import styles from './styles'
+import { strings } from '../../I18n'
 import * as routes from '../../constants/routes'
 
 const DefaultCallout = (props) => {
@@ -16,14 +17,14 @@ const DefaultCallout = (props) => {
   return (
     <Callout tooltip>
       <View style={styles.calloutContainer}>
-        <Text style={styles.bicyclesAmountText}>Total: {station.total_amount_of_bicycles}</Text>
-        <Text style={styles.bicyclesAmountText}>Available: {station.amount_of_bicycle_available}</Text>
+        <Text style={styles.bicyclesAmountText}>{strings('total')}: {station.total_amount_of_bicycles}</Text>
+        <Text style={styles.bicyclesAmountText}>{strings('available')}: {station.amount_of_bicycle_available}</Text>
         <CalloutSubview
           style={styles.calloutButton} 
           onPress={() => navigation.navigate(routes.STATION_INFO_SCREEN, { 
             stationID: getStationIDBasedOnENV(station)
           })}>
-          <Text style={styles.buttonText}>See Details</Text>
+          <Text style={styles.buttonText}>{strings('seeDetails')}</Text>
         </CalloutSubview>
       </View>
     </Callout>

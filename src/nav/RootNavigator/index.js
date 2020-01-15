@@ -4,13 +4,15 @@ import { createStackNavigator } from 'react-navigation-stack'
 import MapContainer from '../../containers/MapContainer'
 import BicycleList from '../../containers/BicycleList'
 
+import { strings } from '../../I18n'
+
 export const createRootNavigator = () => {
   return createAppContainer(
     createStackNavigator({
       MapScreen: {
         screen: MapContainer,
         navigationOptions: {
-          title: 'Stations',
+          title: strings('stations'),
           headerTitleStyle: {
             color: '#324755'
           }
@@ -19,7 +21,7 @@ export const createRootNavigator = () => {
       BicycleListScreen: {
         screen: BicycleList,
         navigationOptions: {
-          title: 'Station Details',
+          title: strings('stationDetails'),
           headerTitleStyle: {
             color: '#324755'
           }
