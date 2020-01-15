@@ -99,21 +99,30 @@ export const server100 = [{"the_geom":{"type":"Point","coordinates":[-122.456792
 ,{"the_geom":{"type":"Point","coordinates":[-122.489987162849,37.770335884704]},"objectid":"3599","map_label":"Grill","asset_id":"151074","created_user":"rpdgis","created_date":"2013-05-22T17:10:03.000Z","last_edited_user":"RPDGIS@RPDGIS.SFGOV.ORG","last_edited_date":"2018-07-02T19:39:05.000Z","globalid":"{43473481-C867-40E0-B4EF-4BA43295EA9F}","longitude":"-122.48997394","latitude":"37.770330950000002","functional_area_id":"100953","facility_id":"100952","property_id":"94","tma_asset_name":"Lindley Meadow Grill","quantity":"17","asset_type":"Grill"}
 ,{"the_geom":{"type":"Point","coordinates":[-122.448191425775,37.77213163887]},"objectid":"103129","map_label":"Bench","asset_id":"985200","created_user":"RPDGIS@RPDGIS.SFGOV.ORG","created_date":"2016-11-22T18:44:01.000Z","last_edited_user":"ntinclair","last_edited_date":"2019-02-12T17:46:33.000Z","globalid":"{E393B525-742D-4FC8-9D76-36690ADA4024}","longitude":"-122.44817820999999","latitude":"37.772126700000001","functional_area_id":"517","facility_id":"463","property_id":"756665","tma_asset_name":"CPA Bench","quantity":"1","asset_type":"Bench"}]
 
-const models = ['Schwinn', 'Miyata', 'Svea', 'Pegas', 'Bridgestone', 'Lancia']
+const models = ['Schwinn', 'Miyata', 'Svea', 'Pegas', 'Bridgestone', 'Lancia', 'Stels', 'GT', 'LTD']
 
 export const stations = server100.map(
   item => 
   {   
-    const total_amount = Math.floor(Math.random() * 100)
+    const totalAmount = Math.floor(Math.random() * 100)
+    const availableAmount = Math.floor(totalAmount * Math.random())
+    let availabilityGeneratorHelperCounter = availableAmount
     return ({
       ...item,
-      total_amount_of_bicycles: total_amount,
-      amount_of_bicycle_available: Math.floor(total_amount * Math.random()),
-      bicycles: Array(total_amount).fill(0).map(item => ({
-          available: true,
+      total_amount_of_bicycles: totalAmount,
+      amount_of_bicycle_available: availableAmount,
+      bicycles: Array(totalAmount).fill(0).map((item, index) => {
+
+        const generatedBicycleObject = {
+          available: availableAmount === 0 ? false : (availabilityGeneratorHelperCounter > 0 ? true : false),
           battery: Math.floor(Math.random() * 100),
-          model: models[Math.floor(Math.random() * 5)]
-        })
+          model: models[Math.floor(Math.random() * 8)]
+        }
+
+        availabilityGeneratorHelperCounter--
+
+        return generatedBicycleObject
+      }
       )
     })
   }
