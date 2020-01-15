@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Platform, TouchableOpacity } from 'react-native'
 import { Callout, CalloutSubview } from 'react-native-maps'
 
 import styles from './styles'
 import { strings } from '../../I18n'
 import * as routes from '../../constants/routes'
+
+const isIOS = Platform.OS === 'ios'
 
 const DefaultCallout = (props) => {
   const { station, navigation } = props
@@ -14,18 +16,22 @@ const DefaultCallout = (props) => {
     return __DEV__ ? station.asset_id : station.id
   }
 
+  const Button = isIOS ? CalloutSubview : TouchableOpacity
+
+  const OnPress = () => navigation.navigate(routes.STATION_INFO_SCREEN, { 
+    stationID: getStationIDBasedOnENV(station)
+  })
+
   return (
-    <Callout tooltip>
+    <Callout onPress={isIOS ? null : OnPress} tooltip>
       <View style={styles.calloutContainer}>
         <Text style={styles.bicyclesAmountText}>{strings('total')}: {station.total_amount_of_bicycles}</Text>
         <Text style={styles.bicyclesAmountText}>{strings('available')}: {station.amount_of_bicycle_available}</Text>
-        <CalloutSubview
-          style={styles.calloutButton} 
-          onPress={() => navigation.navigate(routes.STATION_INFO_SCREEN, { 
-            stationID: getStationIDBasedOnENV(station)
-          })}>
-          <Text style={styles.buttonText}>{strings('seeDetails')}</Text>
-        </CalloutSubview>
+        <Button
+          style={isIOS ? styles.calloutButtonIOS : styles.calloutButtonAndroid} 
+          onPress={OnPress}>
+          <Text style={styles.buttonText}>{isIOS ? strings('seeDetails') : strings('tapToSeeDetails')}</Text>
+        </Button>
       </View>
     </Callout>
   )
