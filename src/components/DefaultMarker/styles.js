@@ -19,7 +19,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center', 
     backgroundColor: '#a0ee90', 
     borderRadius: 5
-	},
+  },
+  buttonText: {
+    paddingHorizontal: 10
+  }
 })
 
 export default styles
