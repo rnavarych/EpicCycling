@@ -4,7 +4,8 @@ A test app displaying bicycle stations in San Francisco
 How to build and run the app:
 
 iOS:
-1) npm run update
+Cocoapods should be installed
+1) npm run update (In case there is some problems with finding pods - try pod repo update)
 2) react-native run-ios or Run with Xcode
 
 Android:
