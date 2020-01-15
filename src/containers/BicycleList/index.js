@@ -1,8 +1,11 @@
 import React from 'react'
-import { View, FlatList, TouchableOpacity, Text } from 'react-native'
+import { View, FlatList, Text } from 'react-native'
 import { connect } from 'react-redux'
 
 import { getListOfBicycles } from '../../actions/bicycles'
+import DetailsCard from '../../components/DetailsCard';
+import styles from './styles';
+import BicycleListHeader from '../../components/BicycleListHeader';
 
 class BicycleList extends React.PureComponent {
 
@@ -13,46 +16,15 @@ class BicycleList extends React.PureComponent {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: 'lightgrey' }}>
+      <View style={styles.container}>
         <FlatList
-          ListHeaderComponent={
-            <View style={{ width: '100%', height: 50, alignItems: 'center', justifyContent: 'center' }}>
-              <Text>Bicycle Total: {this.props.listOfBicycles.length}</Text>
-            </View>
-          }
+          ListHeaderComponent={<BicycleListHeader totalAmount={this.props.listOfBicycles.length}/>}
           data={this.props.listOfBicycles}
           keyExtractor={(i, index) => String(index)}
           contentContainerStyle={{ paddingHorizontal: 10 }}
-          renderItem={({item}) => (
-            <View 
-              style={{ 
-                borderRadius: 10, 
-                elevation: 5, 
-                width: '100%', 
-                height: 80,  
-                marginVertical: 10,
-                shadowOffset: { width: 0, height: 7 },
-                shadowColor: 'black',
-                backgroundColor: 'white',
-                shadowOpacity: 0.07,
-                justifyContent: 'center',
-                paddingHorizontal: 10
-              }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={{ flex: 1 }}>
-                    <Text>Status: {item.available ? 'Available' : 'Not available'}</Text>
-                    <Text>Model: {item.model}</Text>
-                    <Text>Battery: {item.battery}%</Text>
-                  </View>
-                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end', height: '100%' }}>
-                    <TouchableOpacity
-                      disabled={!item.available}
-                      style={[{ backgroundColor: item.available ? '#f28d21' : 'lightgrey' }, { height: 30, width: 70, borderRadius: 5, justifyContent: 'center', alignItems: 'center' }]}
-                      onPress={() => {}}>
-                        <Text>Book</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+          renderItem={({item, index}) => (
+            <View style={styles.cardMargins}>
+              <DetailsCard key={String(index)} bicycle={item}/>
             </View>
           )
           }

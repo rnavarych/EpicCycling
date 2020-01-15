@@ -22,7 +22,7 @@ class MapContainer extends React.PureComponent {
       >
         {this.props.listOfStations.map((station, index) => 
           <DefaultMarker
-            index={index}
+            key={String(index)}
             station={station}
             navigation={this.props.navigation}
           />

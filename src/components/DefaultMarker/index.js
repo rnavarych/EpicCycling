@@ -4,10 +4,9 @@ import { Marker } from 'react-native-maps'
 import DefaultCallout from '../DefaultCallout';
 
 const DefaultMarker = (props) => {
-  const { index, station, navigation } = props
+  const { station, navigation } = props
   return (
     <Marker
-      key={index}
       coordinate={{
         latitude: parseFloat(station.latitude),
         longitude: parseFloat(station.longitude)
