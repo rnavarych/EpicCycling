@@ -7,5 +7,5 @@ iOS:
 1) npm run update
 2) react-native run-ios or Run with Xcode
 
-![](ScreenShotMap.png)
-![](ScreenShotList.png)
+<img src="ScreenShotMap.png" width="200" height="400"/>
+<img src="ScreenShotList.png" width="200" height="400"/>
