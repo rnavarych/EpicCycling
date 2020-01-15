@@ -3,7 +3,6 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 import MapContainer from '../../containers/MapContainer'
 import BicycleList from '../../containers/BicycleList'
-import BicycleDetails from '../../containers/BicycleDetails'
 
 export const createRootNavigator = () => {
   return createAppContainer(
@@ -26,7 +25,6 @@ export const createRootNavigator = () => {
           }
         }
       },
-      //BicycleDetailsScreen: BicycleDetails
     },
     {
       initialRouteName: 'MapScreen',

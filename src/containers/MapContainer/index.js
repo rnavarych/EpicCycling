@@ -3,14 +3,19 @@ import { View, StyleSheet, Text } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout, CalloutSubview } from 'react-native-maps'
 import { connect } from 'react-redux'
 
-import { server100 } from '../../services/mockdata'
 import { getListOfStations } from '../../actions/stations'
+import * as routes from '../../constants/routes'
 import styles from './styles'
 
 class MapContainer extends React.PureComponent {
 
   componentDidMount() {
     this.props.getListOfStations()
+  }
+
+  getStationIDBasedOnENV = (station) => {
+    //TODO: Should be deleted when the production API will be ready
+    return __DEV__ ? station.asset_id : station.id
   }
 
   render() {
@@ -41,7 +46,9 @@ class MapContainer extends React.PureComponent {
                 <Text style={styles.bicyclesAmountText}>Available: {station.amount_of_bicycle_available}</Text>
                 <CalloutSubview
                   style={styles.calloutButton} 
-                  onPress={() => this.props.navigation.navigate('BicycleListScreen', { stationID: __DEV__ ? station.asset_id : station.id })}>
+                  onPress={() => this.props.navigation.navigate(routes.STATION_INFO_SCREEN, { 
+                    stationID: this.getStationIDBasedOnENV(station) 
+                  })}>
                   <Text style={{ paddingHorizontal: 10 }}>See Details</Text>
                 </CalloutSubview>
               </View>

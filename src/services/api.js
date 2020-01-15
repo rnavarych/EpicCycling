@@ -2,9 +2,9 @@ import { BASE_URL } from '../configs';
 import { REQUEST_TIMEOUT } from '../configs/settings';
 
 import * as actionTypes  from '../constants/actionTypes';
-import { server100, stations } from '../services/mockdata';
+import { stations } from '../mocks';
 
-async function getFetchAction(endpoint, method, body) {
+async function getFetchAction(endpoint, method) {
     let headers = {
         'Accept': 'application/json',
     };
@@ -17,9 +17,9 @@ async function getFetchAction(endpoint, method, body) {
 
 const timeoutAction = reject => setTimeout(() => reject(new Error('request timeout')), REQUEST_TIMEOUT);
 
-export function callApi(endpoint, method, body) {
+export function callApi(endpoint, method) {
     return Promise.race([
-        getFetchAction(endpoint, method, body),
+        getFetchAction(endpoint, method),
         new Promise((resolve, reject) => timeoutAction(reject)),
     ]).then((response) => {
         return response.json().then((json) => {
@@ -36,7 +36,7 @@ export function callApi(endpoint, method, body) {
 
 export const apiMiddleware = store => next => action => {
     let { endpoint } = action;
-    const { body, types, method } = action;
+    const { types, method } = action;
 
     if (!endpoint && !method && !types && action.type) {
         return next(action);
@@ -66,7 +66,7 @@ export const apiMiddleware = store => next => action => {
 
     next(Object.assign({}, { type: requestType }));
 
-
+    //TODO: Should be deleted when the production API will be ready
     if (__DEV__) {
 
       if (requestType === actionTypes.LIST_OF_STATIONS_REQUEST) {
@@ -85,7 +85,7 @@ export const apiMiddleware = store => next => action => {
       }
 
     } else {
-      return callApi(endpoint, method, body)
+      return callApi(endpoint, method)
       .then(response => {
           const result = response;
           next(Object.assign({}, { type: successType, result }));

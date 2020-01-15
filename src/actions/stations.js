@@ -1,9 +1,9 @@
 import * as types from '../constants/actionTypes'
-import * as urls from '../configs/urls'
+import * as endpoints from '../configs/endpoints'
 
 export const getListOfStations = () => {
   return {
-    endpoint: 'https://asdsad.com',
+    endpoint: endpoints.getStations,
     method: 'GET',
     types: [
       types.LIST_OF_STATIONS_REQUEST,

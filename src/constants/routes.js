@@ -1,0 +1,1 @@
+export const STATION_INFO_SCREEN = 'BicycleListScreen'
