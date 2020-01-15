@@ -15,10 +15,13 @@ const styles = StyleSheet.create({
     fontSize: 20, 
     alignSelf: 'center'
 	},
-	calloutButton: {
+	calloutButtonIOS: {
     alignSelf: 'center', 
     backgroundColor: '#a0ee90', 
     borderRadius: 5
+  },
+  calloutButtonAndroid: {
+    alignSelf: 'center',
   },
   buttonText: {
     paddingHorizontal: 10
