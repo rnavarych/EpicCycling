@@ -8,7 +8,7 @@ iOS:
 2) react-native run-ios or Run with Xcode
 
 Android:
-1) npm run update
+1) npm run android-prepare
 2) react-native run-android
 
 <div flex-direction="row">
