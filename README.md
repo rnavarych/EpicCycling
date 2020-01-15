@@ -7,3 +7,5 @@ iOS:
 1) npm run update
 2) react-native run-ios or Run with Xcode
 
+![](ScreenShotMap.png)
+![](ScreenShotList.png)
