@@ -11,13 +11,19 @@ export const createRootNavigator = () => {
       MapScreen: {
         screen: MapContainer,
         navigationOptions: {
-          title: 'Stations'
+          title: 'Stations',
+          headerTitleStyle: {
+            color: '#324755'
+          }
         }
       },
       BicycleListScreen: {
         screen: BicycleList,
         navigationOptions: {
-          title: 'Station Details'
+          title: 'Station Details',
+          headerTitleStyle: {
+            color: '#324755'
+          }
         }
       },
       //BicycleDetailsScreen: BicycleDetails
