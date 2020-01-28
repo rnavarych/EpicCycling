@@ -8,7 +8,7 @@ const BicycleListHeader = (props) => {
   const { totalAmount } = props
   return (
     <View style={styles.container}>
-      <Text>{strings('bicycleTotal')}: {totalAmount}</Text>
+      <Text>{strings('descriptions.bicycleTotal')}: {totalAmount}</Text>
     </View>
   )
 }

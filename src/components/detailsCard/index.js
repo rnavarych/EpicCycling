@@ -10,9 +10,9 @@ const DetailsCard = (props) => {
     <View style={styles.container}>
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.textInfoContainer}>
-          <Text>{strings('status')}: {bicycle.available ? strings('available') : strings('notAvailable')}</Text>
-          <Text>{strings('model')}: {bicycle.model}</Text>
-          <Text>{strings('battery')}: {bicycle.battery}%</Text>
+          <Text>{strings('descriptions.status')}: {bicycle.available ? strings('descriptions.available') : strings('descriptions.notAvailable')}</Text>
+          <Text>{strings('descriptions.model')}: {bicycle.model}</Text>
+          <Text>{strings('descriptions.battery')}: {bicycle.battery}%</Text>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -22,7 +22,7 @@ const DetailsCard = (props) => {
               styles.buttonStyle
             ]}
             onPress={() => {}}>
-              <Text>{strings('book')}</Text>
+              <Text>{strings('descriptions.book')}</Text>
           </TouchableOpacity>
         </View>
       </View>

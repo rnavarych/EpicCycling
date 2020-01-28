@@ -25,12 +25,12 @@ const DefaultCallout = (props) => {
   return (
     <Callout onPress={isIOS ? null : OnPress} tooltip>
       <View style={styles.calloutContainer}>
-        <Text style={styles.bicyclesAmountText}>{strings('total')}: {station.total_amount_of_bicycles}</Text>
-        <Text style={styles.bicyclesAmountText}>{strings('available')}: {station.amount_of_bicycle_available}</Text>
+        <Text style={styles.bicyclesAmountText}>{strings('descriptions.total')}: {station.total_amount_of_bicycles}</Text>
+        <Text style={styles.bicyclesAmountText}>{strings('descriptions.available')}: {station.amount_of_bicycle_available}</Text>
         <Button
           style={isIOS ? styles.calloutButtonIOS : styles.calloutButtonAndroid} 
           onPress={OnPress}>
-          <Text style={styles.buttonText}>{isIOS ? strings('seeDetails') : strings('tapToSeeDetails')}</Text>
+          <Text style={styles.buttonText}>{isIOS ? strings('buttons.seeDetails') : strings('buttons.tapToSeeDetails')}</Text>
         </Button>
       </View>
     </Callout>

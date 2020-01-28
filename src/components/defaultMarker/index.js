@@ -1,7 +1,7 @@
 import React from 'react'
 import { Marker } from 'react-native-maps'
 
-import DefaultCallout from '../DefaultCallout';
+import DefaultCallout from '../defaultCallout';
 
 const DefaultMarker = (props) => {
   const { station, navigation } = props

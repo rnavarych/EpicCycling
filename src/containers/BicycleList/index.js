@@ -3,9 +3,9 @@ import { View, FlatList, Text } from 'react-native'
 import { connect } from 'react-redux'
 
 import { getListOfBicycles } from '../../actions/bicycles'
-import DetailsCard from '../../components/DetailsCard';
+import DetailsCard from '../../components/detailsCard';
 import styles from './styles';
-import BicycleListHeader from '../../components/BicycleListHeader';
+import BicycleListHeader from '../../components/dicycleListHeader';
 
 class BicycleList extends React.PureComponent {
 

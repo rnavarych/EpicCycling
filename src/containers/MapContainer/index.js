@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { getListOfStations } from '../../actions/stations'
 import * as locations from '../../constants/locations'
-import DefaultMarker from '../../components/DefaultMarker';
+import DefaultMarker from '../../components/defaultMarker';
 
 class MapContainer extends React.PureComponent {
 

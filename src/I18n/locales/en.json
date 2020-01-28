@@ -1,14 +1,19 @@
 {
-  "bicycleTotal": "Bicycle Total",
-  "seeDetails": "See Details",
-  "status": "Status",
-  "model": "Model",
-  "battery": "Battery",
-  "book": "Book",
-  "available": "Available",
-  "notAvailable": "Not Available",
-  "total": "Total",
-  "stations": "Stations",
-  "stationDetails": "Station Details",
-  "tapToSeeDetails": "Tap To See Details"
+  "buttons": {
+    "seeDetails": "See Details",
+    "tapToSeeDetails": "Tap To See Details",
+    "logout": "Log out"
+  },
+  "descriptions": {
+    "bicycleTotal": "Bicycle Total",
+    "total": "Total",
+    "available": "Available",
+    "status": "Status",
+    "model": "Model",
+    "battery": "Battery",
+    "notAvailable": "Not Available",
+    "book": "Book"
+  },
+  "titles": {
+  }
 }
