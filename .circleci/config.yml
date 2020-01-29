@@ -38,9 +38,9 @@ workflows:
 
       # Analyze the Javascript using ESLint, Flow, and Jest
       # Note: This is a job which is defined above and not part of the Orb
-      - analyse_js:
-          requires:
-            - checkout_code
+#      - analyse_js:
+#          requires:
+#            - checkout_code
 
       # Build the Android app in debug mode
       - rn/android_build:
