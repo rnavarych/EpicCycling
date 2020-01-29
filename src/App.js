@@ -23,11 +23,9 @@ class App extends React.PureComponent {
       if (value === null) {
         AsyncStorage.setItem(FIRST_LAUNCH, FIRST_LAUNCH);
         this.setState({firstLaunch: true});
-      } else {
-        this.setState({firstLaunch: false});
       }
     })
-  }
+  };
 
   render() {
     if (this.state.firstLaunch === null) {

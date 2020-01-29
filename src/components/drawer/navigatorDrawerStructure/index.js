@@ -10,7 +10,7 @@ function NavigationDrawerStructure({navigationProps}) {
 
   return (
     <View style={ styles.container }>
-      <TouchableOpacity onPress={ () => toggleDrawer() }>
+      <TouchableOpacity onPress={ toggleDrawer }>
         <Image
           source={ navigationProps.state.isDrawerOpen ? images.down_arrow : images.drawer }
           style={ styles.icon }
