@@ -4,7 +4,7 @@ import {theme} from '../constants/theme'
 
 export function withSafeAreaView(Component, backgroundColor) {
   return (props) => {
-    return <SafeAreaView style={ {flex: 1, backgroundColor: backgroundColor || theme.primary} }
+    return <SafeAreaView style={ {flex: 1, backgroundColor: backgroundColor || theme.background} }
                          forceInset={ {bottom: 'never'} }>
       <Component { ...props } />
     </SafeAreaView>

@@ -5,7 +5,8 @@
     "logout": "Log out",
     "welcomeButton": "Start",
     "resendSms": "Click to resend sms",
-    "registration": "Registration"
+    "registration": "Registration",
+    "updatePhone": "Update phone"
   },
   "descriptions": {
     "bicycleTotal": "Bicycle Total",
@@ -20,7 +21,8 @@
     "welcomeSecondLabel": "welcome some text, welcome some text, welcome some text",
     "registrationFirstLabel": "registration text registration text test test",
     "registrationSecondLabel": "registration text registration text test text registration text test test ",
-    "resendSms": "Resend sms click"
+    "resendSms": "Resend sms click",
+    "emptyPhone": "Enter phone number"
   },
   "screenTitles": {
     "sms": "SMS"

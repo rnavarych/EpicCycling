@@ -5,3 +5,4 @@ export const MAP_STACK = 'mapStack';
 export const STATION_INFO_SCREEN = 'BicycleListScreen';
 export const WELCOME_SCREEN = 'WelcomeScreen';
 export const LOGIN_SCREEN = 'LoginScreen';
+export const EDIT_PHONE_SCREEN = 'EditPhoneScreen';

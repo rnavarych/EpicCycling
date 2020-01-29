@@ -3,7 +3,7 @@ import { View, Image, Text, TouchableHighlight } from 'react-native';
 import styles from './styles';
 import { theme } from "../../../constants/theme";
 
-function DrawerItems(props) {
+function DrawerItems(props = {}) {
 
   const pressAction = (item) => {
     item.navigation.isFocused() ? item.navigation.toggleDrawer() : item.navigation.navigate(item.key);

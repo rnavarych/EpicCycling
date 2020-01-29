@@ -8,7 +8,9 @@ const defaultTheme = {
   text: '#001021',
   error: '#B71F0E',
   disabled: '#BEC6C6',
-  placeholder: '#dddddd',
+  placeholder: '#DDDDDD',
+  filledInput: '#3EC500',
+  editingInput: '#0077FF'
 }
 
 export const theme = defaultTheme;

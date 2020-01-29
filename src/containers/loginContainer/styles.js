@@ -30,16 +30,6 @@ const styles = StyleSheet.create({
     height: 15,
     width: 20
   },
-  codeInput: {
-    marginVertical: 10,
-    borderBottomColor: theme.text,
-    borderBottomWidth: 1,
-    paddingHorizontal: 10,
-    fontSize: 18,
-    textAlign: 'center',
-    width: 100,
-    paddingBottom: 10
-  },
   indentation: {
     marginVertical: 20
   }

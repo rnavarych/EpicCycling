@@ -7,72 +7,98 @@ import InformationText from "../../components/text/informationText";
 import images from "../../configs/images";
 import { strings } from "../../I18n";
 import Button from "../../components/buttons/button";
+import UnderlineInput from "../../components/inputs/underlineInput";
+import * as routes from '../../constants/routes'
+import { savePhoneNumber } from "../../actions/registration";
+import { connect } from "react-redux";
 
 class LoginScreen extends PureComponent {
 
+  state = {
+    underlineColor: theme.placeholder,
+    codeValue: ''
+  };
+
   resend = () => {
     //todo resend action
-  }
+  };
 
   editPhone = () => {
-    //todo edit phone screen
-  }
+    this.props.navigation.navigate(routes.EDIT_PHONE_SCREEN)
+  };
 
   registration = () => {
     //todo registration
-  }
+  };
+
+  changeCode = (code) => {
+    this.setState({
+      codeValue: code,
+      underlineColor: code === '' ? theme.placeholder : theme.filledInput
+    })
+  };
 
   registrationInformationComponent = () => (
-    <View style={styles.informationContainer}>
+    <View style={ styles.informationContainer }>
       <InformationText
-        style={styles.text}
-        text={strings('descriptions.registrationFirstLabel')}
+        style={ styles.text }
+        text={ strings('descriptions.registrationFirstLabel') }
       />
       <InformationText
-        style={[styles.text, styles.indentation]}
-        text={strings('descriptions.registrationSecondLabel')}
+        style={ [styles.text, styles.indentation] }
+        text={ strings('descriptions.registrationSecondLabel') }
       />
     </View>
   );
 
-  phoneNumberComponent = (code, phone) => (
-    <View style={styles.phoneContainer}>
-      <Text style={styles.phoneText}>{code} {phone}</Text>
+  phoneNumberComponent = (code, phone) => {
+    const phoneNumber = code === '' && phone === '' ? strings('descriptions.emptyPhone') : `${ code } ${ phone }`;
+    return <View style={ styles.phoneContainer }>
+      <Text style={ styles.phoneText }>{ phoneNumber }</Text>
       <TouchableOpacity
-        style={styles.clickArea}
-        onPress={this.editPhone}
+        style={ styles.clickArea }
+        onPress={ this.editPhone }
       >
-        <Image style={styles.pencilIcon} source={images.pencil}/>
+        <Image style={ styles.pencilIcon } source={ images.pencil }/>
       </TouchableOpacity>
     </View>
-  );
+  };
 
   render() {
     return (
-      <View style={styles.container}>
-        {this.registrationInformationComponent()}
-        {this.phoneNumberComponent('+375', '291035377')}
-        <TextInput
-          style={styles.codeInput}
-          placeholder={strings('placeholders.code')}
-          placeholderColor={theme.placeholder}
+      <View style={ styles.container }>
+        { this.registrationInformationComponent() }
+        { this.phoneNumberComponent(this.props.code, this.props.phone) }
+        <UnderlineInput
+          underlineColor={ this.state.underlineColor }
+          placeholder={ strings('placeholders.code') }
+          onChangeText={ this.changeCode }
         />
         <Button
-          style={styles.indentation}
-          onPress={this.registration}
-          label={strings('buttons.registration')}
+          style={ styles.indentation }
+          onPress={ this.registration }
+          label={ strings('buttons.registration') }
         />
         <InformationText
-          style={styles.text}
-          text={strings('descriptions.resendSms')}
+          style={ styles.text }
+          text={ strings('descriptions.resendSms') }
         />
         <ClickableText
-          text={strings('buttons.resendSms')}
-          onPress={this.resend}
+          text={ strings('buttons.resendSms') }
+          onPress={ this.resend }
         />
       </View>
     );
   }
 }
 
-export default LoginScreen
+const mapStateToProps = ({registration: {code, phone}}) => ({
+  code,
+  phone
+});
+
+const mapDispatchToProps = dispatch => ({
+  savePhone: (code, phone) => dispatch(savePhoneNumber(code, phone))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
