@@ -38,15 +38,17 @@ workflows:
 
       # Analyze the Javascript using ESLint, Flow, and Jest
       # Note: This is a job which is defined above and not part of the Orb
-      - analyse_js:
+#      - analyse_js:
+#          requires:
+#            - checkout_code
 
       # Build the Android app in debug mode
       - rn/android_build:
           name: build_android_debug
           project_path: "android"
           build_type: debug
-          requires:
-            - analyse_js
+#          requires:
+#            - analyse_js
 
       # Build and test the Android app in release mode
       # Note: We split these into seperate jobs because we can build the Android app on a Linux machine and preserve the expensive MacOS executor minutes for when it's required
@@ -54,12 +56,12 @@ workflows:
           name: build_android_release
           project_path: "android"
           build_type: release
-          requires:
-            - analyse_js
-      - rn/android_test:
-          detox_configuration: "android.emu.release"
-          requires:
-            - build_android_release
+#          requires:
+#            - analyse_js
+#      - rn/android_test:
+#          detox_configuration: "android.emu.release"
+#          requires:
+#            - build_android_release
 
 
       # Build the iOS app in release mode and do not run tests
