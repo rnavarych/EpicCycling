@@ -2,7 +2,8 @@
   "buttons": {
     "seeDetails": "See Details",
     "tapToSeeDetails": "Tap To See Details",
-    "logout": "Log out"
+    "logout": "Log out",
+    "welcomeButton": "Start"
   },
   "descriptions": {
     "bicycleTotal": "Bicycle Total",
@@ -12,7 +13,9 @@
     "model": "Model",
     "battery": "Battery",
     "notAvailable": "Not Available",
-    "book": "Book"
+    "book": "Book",
+    "welcomeFirstLabel": "welcome some text",
+    "welcomeSecondLabel": "welcome some text, welcome some text, welcome some text"
   },
   "titles": {
   }

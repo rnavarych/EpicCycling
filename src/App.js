@@ -1,7 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux';
 
-import { createRootNavigator } from './nav/RootNavigator'
+import { createRootNavigator } from './nav/rootNavigator'
 import { configureStore } from './store'
 import AsyncStorage from '@react-native-community/async-storage';
 import { FIRST_LAUNCH } from "./constants/asyncStorage";
@@ -23,6 +23,8 @@ class App extends React.PureComponent {
       if (value === null) {
         AsyncStorage.setItem(FIRST_LAUNCH, FIRST_LAUNCH);
         this.setState({firstLaunch: true});
+      } else {
+        this.setState({firstLaunch: false});
       }
     })
   };
@@ -31,7 +33,7 @@ class App extends React.PureComponent {
     if (this.state.firstLaunch === null) {
       return null
     }
-    const RootNavigator = createRootNavigator(this.state.firstLaunch)
+    const RootNavigator = createRootNavigator(true)
 
     return (
       <Provider store={store}>

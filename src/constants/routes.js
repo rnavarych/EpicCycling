@@ -1,4 +1,6 @@
 export const APP_STACK = 'AppStack';
-export const MAP_STACK = 'MapStack';
+export const AUTH_STACK = 'AuthStack';
+export const MAP_STACK = 'mapStack';
 
-export const STATION_INFO_SCREEN = 'BicycleListScreen'
+export const STATION_INFO_SCREEN = 'BicycleListScreen';
+export const WELCOME_SCREEN = 'WelcomeScreen';
