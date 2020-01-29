@@ -3,7 +3,9 @@
     "seeDetails": "See Details",
     "tapToSeeDetails": "Tap To See Details",
     "logout": "Log out",
-    "welcomeButton": "Start"
+    "welcomeButton": "Start",
+    "resendSms": "Click to resend sms",
+    "registration": "Registration"
   },
   "descriptions": {
     "bicycleTotal": "Bicycle Total",
@@ -15,8 +17,15 @@
     "notAvailable": "Not Available",
     "book": "Book",
     "welcomeFirstLabel": "welcome some text",
-    "welcomeSecondLabel": "welcome some text, welcome some text, welcome some text"
+    "welcomeSecondLabel": "welcome some text, welcome some text, welcome some text",
+    "registrationFirstLabel": "registration text registration text test test",
+    "registrationSecondLabel": "registration text registration text test text registration text test test ",
+    "resendSms": "Resend sms click"
   },
-  "titles": {
+  "screenTitles": {
+    "sms": "SMS"
+  },
+  "placeholders": {
+    "code": "Code"
   }
 }

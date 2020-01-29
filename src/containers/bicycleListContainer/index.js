@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
 import { View, FlatList, Text } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -7,7 +7,7 @@ import DetailsCard from '../../components/detailsCard';
 import styles from './styles';
 import BicycleListHeader from '../../components/dicycleListHeader';
 
-class BicycleList extends React.PureComponent {
+class BicycleList extends PureComponent {
 
   componentDidMount() {
     const stationID = this.props.navigation.getParam('stationID')

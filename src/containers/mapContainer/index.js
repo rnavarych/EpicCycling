@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
 import { StyleSheet } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import { connect } from 'react-redux'
@@ -7,7 +7,7 @@ import { getListOfStations } from '../../actions/stations'
 import * as locations from '../../constants/locations'
 import DefaultMarker from '../../components/defaultMarker';
 
-class MapContainer extends React.PureComponent {
+class MapContainer extends PureComponent {
 
   componentDidMount() {
     this.props.getListOfStations()

@@ -3,6 +3,7 @@ import LogoTitle from "../components/logoTitle";
 import images from "../configs/images";
 import { theme } from "../constants/theme";
 import React from "react";
+import { strings } from "../I18n";
 
 export const appStackNavigationOptions = ({navigation}) => ({
   headerLeft: () =>  <NavigationDrawerStructure navigationProps={ navigation }/>,
@@ -14,5 +15,14 @@ export const appStackNavigationOptions = ({navigation}) => ({
 })
 
 export const authStackNavigatorOptions = ({navigation}) => ({
-  header: null
+  headerShown: false
+})
+
+export const loginScreenNavigationOptions = () => ({
+  title: strings('screenTitles.sms'),
+  headerBackTitleVisible: false,
+  headerTintColor: theme.primaryText,
+  headerStyle: {
+    backgroundColor: theme.primary
+  }
 })

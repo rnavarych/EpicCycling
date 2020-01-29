@@ -5,4 +5,5 @@ export default {
   alert: require('../../assets/images/alert.png'),
   map: require('../../assets/images/map.png'),
   down_arrow: require('../../assets/images/down_arrow.png'),
+  pencil: require('../../assets/images/pencil.png'),
 }

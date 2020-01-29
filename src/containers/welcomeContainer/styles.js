@@ -5,20 +5,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.primary,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginVertical: 20
   },
   logo: {
     width: 200,
     height: 100
   },
   firstLabel: {
-    color: theme.primaryText,
-    fontSize: 16,
     marginVertical: 10
   },
   secondLabel: {
-    color: theme.primaryText,
-    fontSize: 16,
     textAlign: 'center',
     marginHorizontal: 40,
     marginVertical: 15
