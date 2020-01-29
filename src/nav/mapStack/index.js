@@ -1,9 +1,9 @@
 import { createStackNavigator } from "react-navigation-stack";
 import React from 'react';
-import MapContainer from "../../containers/MapContainer";
-import BicycleList from "../../containers/BicycleList";
+import MapContainer from "../../containers/mapContainer";
+import BicycleList from "../../containers/bicycleListContainer";
 
-export const mapStackNavigator = () => {
+export const MapStackNavigator = () => {
   return createStackNavigator({
       MapScreen: {
         screen: MapContainer,
@@ -16,4 +16,4 @@ export const mapStackNavigator = () => {
       headerMode: 'none',
       initialRouteName: 'MapScreen',
     })
-}
+};

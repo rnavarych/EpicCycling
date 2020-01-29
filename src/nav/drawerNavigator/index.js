@@ -1,15 +1,15 @@
 import { createDrawerNavigator } from "react-navigation-drawer";
-import { mapStackNavigator } from "../MapStack";
+import { MapStackNavigator } from "../mapStack";
 import { MAP_STACK } from "../../constants/routes";
 import { theme } from "../../constants/theme";
 import React from "react";
 import CustomDrawerComponent from "../../components/drawer/drawerComponent";
 import images from "../../configs/images";
 
-const drawerNavigator = () => (
+export const DrawerNavigator = () => (
   createDrawerNavigator({
       [MAP_STACK]: {
-        screen: mapStackNavigator(),
+        screen: MapStackNavigator(),
         navigationOptions: {
           drawerIcon: images.map,
           drawerLabel: 'Map'
@@ -52,10 +52,8 @@ const drawerNavigator = () => (
       },
     },
     {
-      contentComponent: props => <CustomDrawerComponent props={props}/>,
+      contentComponent: props => <CustomDrawerComponent props={ props }/>,
       drawerBackgroundColor: theme.primary,
       initialRouteName: MAP_STACK,
     })
-)
-
-export default drawerNavigator
+);
