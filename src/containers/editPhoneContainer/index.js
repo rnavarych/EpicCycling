@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Keyboard } from 'react-native';
+import { View } from 'react-native';
 import styles from './styles';
 import UnderlineInput from "../../components/inputs/underlineInput";
 import Button from "../../components/buttons/button";
@@ -8,6 +8,7 @@ import { savePhoneNumber } from "../../actions/registration";
 import { theme } from '../../constants/theme';
 import { CODE_INPUT, PHONE_INPUT } from "../../constants/constants";
 import { strings } from "../../I18n";
+import { getThemeByValue, keyBoardHideListener, keyBoardShowListener } from "../../utils/utils";
 
 class EditPhoneScreen extends PureComponent {
 
@@ -20,8 +21,8 @@ class EditPhoneScreen extends PureComponent {
   };
 
   componentDidMount() {
-    Keyboard.addListener('keyboardWillShow', () => this.setState({keyboardVisible: true}));
-    Keyboard.addListener('keyboardDidHide', () => this.setState({keyboardVisible: false}));
+    this.keyboardShowListener = keyBoardShowListener(() => this.setState({keyboardVisible: true}));
+    this.keyboardHideListener = keyBoardHideListener(() => this.setState({keyboardVisible: false}));
     this.setState({
       codeUnderlineColor: this.underLineColor(this.props.code),
       phoneUnderlineColor: this.underLineColor(this.props.phone)
@@ -29,17 +30,11 @@ class EditPhoneScreen extends PureComponent {
   }
 
   async componentWillUnmount() {
-    await Keyboard.removeListener('keyboardWillShow');
-    await Keyboard.removeListener('keyboardDidHide');
+    this.keyboardShowListener.remove();
+    this.keyboardHideListener.remove();
   }
 
-  underLineColor = (value, keyboardVisible = false) => {
-    if (keyboardVisible) {
-      return theme.editingInput;
-    } else {
-      return value === '' ? theme.placeholder : theme.filledInput
-    }
-  };
+  underLineColor = (value, keyboardVisible = false) => keyboardVisible ? theme.editingInput : getThemeByValue(value);
 
   changeFocus = (focusedInput) => {
     this.setState({

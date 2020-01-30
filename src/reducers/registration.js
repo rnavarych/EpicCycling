@@ -1,8 +1,9 @@
 import * as types from '../constants/actionTypes';
+import { EMPTY_STRING } from "../constants/constants";
 
 let initialState = {
-  code: '',
-  phone: ''
+  code: EMPTY_STRING,
+  phone: EMPTY_STRING
 }
 
 const registration = (state = initialState, action) => {

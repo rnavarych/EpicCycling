@@ -9,6 +9,7 @@ import HeaderRightButton from "../components/header/rightButton";
 export const appStackNavigationOptions = ({navigation}) => ({
   headerLeft: () =>  <NavigationDrawerStructure navigationProps={ navigation }/>,
   headerTitle: () => <LogoTitle source={ images.logo }/>,
+  headerTitleAlign: 'center',
   headerStyle: {
     backgroundColor: theme.primary,
   },
@@ -22,6 +23,7 @@ export const authStackNavigatorOptions = ({navigation}) => ({
 export const loginScreenNavigationOptions = () => ({
   title: strings('screenTitles.sms'),
   headerBackTitleVisible: false,
+  headerTitleAlign: 'center',
   headerTintColor: theme.primaryText,
   headerStyle: {
     backgroundColor: theme.primary
@@ -31,6 +33,7 @@ export const loginScreenNavigationOptions = () => ({
 export const editPhoneOptions = ({navigation}) => ({
   title: 'Edit Phone',
   headerLeft: () => null,
+  headerTitleAlign: 'center',
   headerTintColor: theme.primaryText,
   headerRight: () => <HeaderRightButton onPress={() => navigation.goBack()} icon={images.close}/>,
   headerStyle: {

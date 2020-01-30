@@ -11,12 +11,14 @@ import UnderlineInput from "../../components/inputs/underlineInput";
 import * as routes from '../../constants/routes'
 import { savePhoneNumber } from "../../actions/registration";
 import { connect } from "react-redux";
+import { EMPTY_STRING } from "../../constants/constants";
+import { getThemeByValue } from "../../utils/utils";
 
 class LoginScreen extends PureComponent {
 
   state = {
     underlineColor: theme.placeholder,
-    codeValue: ''
+    codeValue: EMPTY_STRING
   };
 
   resend = () => {
@@ -34,7 +36,7 @@ class LoginScreen extends PureComponent {
   changeCode = (code) => {
     this.setState({
       codeValue: code,
-      underlineColor: code === '' ? theme.placeholder : theme.filledInput
+      underlineColor: getThemeByValue(code)
     })
   };
 
@@ -52,7 +54,7 @@ class LoginScreen extends PureComponent {
   );
 
   phoneNumberComponent = (code, phone) => {
-    const phoneNumber = code === '' && phone === '' ? strings('descriptions.emptyPhone') : `${ code } ${ phone }`;
+    const phoneNumber = code === EMPTY_STRING && phone === EMPTY_STRING ? strings('descriptions.emptyPhone') : `${ code } ${ phone }`;
     return <View style={ styles.phoneContainer }>
       <Text style={ styles.phoneText }>{ phoneNumber }</Text>
       <TouchableOpacity
