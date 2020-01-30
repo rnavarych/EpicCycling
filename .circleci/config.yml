@@ -220,7 +220,7 @@ jobs:
       - _JAVA_OPTIONS: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
       - GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"
 workflows:
-  test:
+  EpicCycling Builds:
     jobs:
       - checkout_code
       - analyse_js:
