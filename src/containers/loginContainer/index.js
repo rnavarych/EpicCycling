@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import ClickableText from "../../components/text/clickableText";
 import { theme } from "../../constants/theme";

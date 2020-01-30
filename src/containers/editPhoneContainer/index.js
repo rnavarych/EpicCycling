@@ -29,7 +29,7 @@ class EditPhoneScreen extends PureComponent {
     })
   }
 
-  async componentWillUnmount() {
+  componentWillUnmount() {
     this.keyboardShowListener.remove();
     this.keyboardHideListener.remove();
   }
