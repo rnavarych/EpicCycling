@@ -1,0 +1,257 @@
+version: 2
+jobs:
+  checkout_code:
+    docker:
+      - image: circleci/node:8
+    resource_class: medium
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: .
+          paths: .
+    environment:
+      - PATH: /opt/yarn/yarn-v1.5.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  analyse_js:
+    docker:
+      - image: circleci/node:8
+    resource_class: medium
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          command: |
+            mkdir -p ~/.tmp/checksumfiles
+            find . -type f -name 'package.json' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/package.json
+            find . -type f -name 'yarn.lock' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/yarn.lock
+          name: Create cache checksum file
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ checksum "~/.tmp/checksumfiles/yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+      - run:
+          command: yarn install --frozen-lockfile --non-interactive --cache-folder ~/.cache/yarn
+          name: Yarn Install
+      - save_cache:
+          key: |
+            yarn-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ checksum "~/.tmp/checksumfiles/yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Run ESLint
+          command: yarn eslint
+      - run:
+          name: Flow
+          command: yarn flow
+    environment:
+      - PATH: /opt/yarn/yarn-v1.5.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  build_android_debug:
+    docker:
+      - image: reactnativecommunity/react-native-android
+    resource_class: medium
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          command: |
+            mkdir -p ~/.tmp/checksumfiles
+            find . -type f -name 'package.json' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/package.json
+            find . -type f -name 'yarn.lock' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/yarn.lock
+          name: Create cache checksum file
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ checksum "~/.tmp/checksumfiles/yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+      - run:
+          command: yarn install --frozen-lockfile --non-interactive --cache-folder ~/.cache/yarn
+          name: Yarn Install
+      - save_cache:
+          key: |
+            yarn-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ checksum "~/.tmp/checksumfiles/yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          command: |
+            mkdir -p ~/.tmp/checksumfiles
+            find . -type f -name 'build.gradle' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/build.gradle
+            find . -type f -name 'settings.gradle' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/settings.gradle
+          name: Create cache checksum files
+      - restore_cache:
+          keys:
+            - gradle-wrapper-{{ arch }}-{{ checksum "android/gradle/wrapper/gradle-wrapper.properties" }}-{{ .Environment.CACHE_VERSION }}
+      - restore_cache:
+          keys:
+            - gradle-home-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/build.gradle" }}-{{ checksum "~/.tmp/checksumfiles/settings.gradle" }}-{{ .Environment.CACHE_VERSION }}
+      - restore_cache:
+          keys:
+            - gradle-build-cache-{{ .Revision }}
+          name: Restoring Gradle Build caches
+      - run:
+          command: |
+            [ -d ~/gradle-build-caches ] &&
+              [ -n "$(ls -A ~/gradle-build-caches)" ] &&
+              rm -rf ~/.gradle/caches/build-cache-* &&
+              mkdir -p ~/.gradle/caches/ &&
+              mv ~/gradle-build-caches/* ~/.gradle/caches/ || true
+          name: Dispersing Gradle Build caches for restoring
+      - run:
+          command: cd android && ./gradlew --max-workers 2 downloadDependencies
+          name: Downloading Gradle Dependencies
+      - save_cache:
+          key: gradle-wrapper-{{ arch }}-{{ checksum "android/gradle/wrapper/gradle-wrapper.properties" }}-{{ .Environment.CACHE_VERSION }}
+          name: Saving Gradle wrapper cache
+          paths:
+            - ~/.gradle/wrapper/
+      - save_cache:
+          key: gradle-home-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/build.gradle" }}-{{ checksum "~/.tmp/checksumfiles/settings.gradle" }}-{{ .Environment.CACHE_VERSION }}
+          name: Saving Gradle home cache
+          paths:
+            - ~/.gradle/caches/
+      - run:
+          command: cd android && chmod +x gradlew && ./gradlew --no-daemon --build-cache --max-workers 2 --continue assembledebug -DtestBuildType=debug --stacktrace
+          name: Build Android APK
+      - run:
+          command: |
+            mkdir -p ~/gradle-build-caches
+            [ -d ~/.gradle/caches ] &&
+              [ -n "$(ls -Ad ~/.gradle/caches/build-cache-* 2>/dev/null)" ] &&
+              rm -rf ~/gradle-build-caches/* &&
+              mv ~/.gradle/caches/build-cache-* ~/gradle-build-caches || true
+          name: Collecting Gradle Build caches for saving
+          when: always
+      - save_cache:
+          key: gradle-debug-build-cache-{{ .Revision }}
+          name: Saving Gradle Build caches
+          paths:
+            - ~/gradle-build-caches
+          when: always
+      - persist_to_workspace:
+          paths:
+            - android/app/build/outputs/apk
+          root: .
+      - store_artifacts:
+          path: android/app/build/outputs/apk
+    environment:
+      - _JAVA_OPTIONS: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      - GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"
+  build_android_release:
+    docker:
+      - image: reactnativecommunity/react-native-android
+    resource_class: medium
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          command: |
+            mkdir -p ~/.tmp/checksumfiles
+            find . -type f -name 'package.json' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/package.json
+            find . -type f -name 'yarn.lock' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/yarn.lock
+          name: Create cache checksum file
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ checksum "~/.tmp/checksumfiles/yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+      - run:
+          command: yarn install --frozen-lockfile --non-interactive --cache-folder ~/.cache/yarn
+          name: Yarn Install
+      - save_cache:
+          key: |
+            yarn-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/package.json" }}-{{ checksum "~/.tmp/checksumfiles/yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          command: |
+            mkdir -p ~/.tmp/checksumfiles
+            find . -type f -name 'build.gradle' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/build.gradle
+            find . -type f -name 'settings.gradle' -not -path "*node_modules*" -exec cat {} + >> ~/.tmp/checksumfiles/settings.gradle
+          name: Create cache checksum files
+      - restore_cache:
+          keys:
+            - gradle-wrapper-{{ arch }}-{{ checksum "android/gradle/wrapper/gradle-wrapper.properties" }}-{{ .Environment.CACHE_VERSION }}
+      - restore_cache:
+          keys:
+            - gradle-home-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/build.gradle" }}-{{ checksum "~/.tmp/checksumfiles/settings.gradle" }}-{{ .Environment.CACHE_VERSION }}
+      - restore_cache:
+          keys:
+            - gradle-build-cache-{{ .Revision }}
+          name: Restoring Gradle Build caches
+      - run:
+          command: |
+            [ -d ~/gradle-build-caches ] &&
+              [ -n "$(ls -A ~/gradle-build-caches)" ] &&
+              rm -rf ~/.gradle/caches/build-cache-* &&
+              mkdir -p ~/.gradle/caches/ &&
+              mv ~/gradle-build-caches/* ~/.gradle/caches/ || true
+          name: Dispersing Gradle Build caches for restoring
+      - run:
+          command: cd android && ./gradlew --max-workers 2 downloadDependencies
+          name: Downloading Gradle Dependencies
+      - save_cache:
+          key: gradle-wrapper-{{ arch }}-{{ checksum "android/gradle/wrapper/gradle-wrapper.properties" }}-{{ .Environment.CACHE_VERSION }}
+          name: Saving Gradle wrapper cache
+          paths:
+            - ~/.gradle/wrapper/
+      - save_cache:
+          key: gradle-home-cache-{{ arch }}-{{ checksum "~/.tmp/checksumfiles/build.gradle" }}-{{ checksum "~/.tmp/checksumfiles/settings.gradle" }}-{{ .Environment.CACHE_VERSION }}
+          name: Saving Gradle home cache
+          paths:
+            - ~/.gradle/caches/
+      - run:
+          command: cd android && chmod +x gradlew && ./gradlew --no-daemon --build-cache --max-workers 2 --continue assemblerelease -DtestBuildType=release --stacktrace
+          name: Build Android APK
+      - run:
+          command: |
+            mkdir -p ~/gradle-build-caches
+            [ -d ~/.gradle/caches ] &&
+              [ -n "$(ls -Ad ~/.gradle/caches/build-cache-* 2>/dev/null)" ] &&
+              rm -rf ~/gradle-build-caches/* &&
+              mv ~/.gradle/caches/build-cache-* ~/gradle-build-caches || true
+          name: Collecting Gradle Build caches for saving
+          when: always
+      - save_cache:
+          key: gradle-debug-build-cache-{{ .Revision }}
+          name: Saving Gradle Build caches
+          paths:
+            - ~/gradle-build-caches
+          when: always
+      - persist_to_workspace:
+          paths:
+            - android/app/build/outputs/apk
+          root: .
+      - store_artifacts:
+          path: android/app/build/outputs/apk
+    environment:
+      - _JAVA_OPTIONS: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+      - GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"
+workflows:
+  EpicCycling Builds:
+    jobs:
+      - checkout_code
+      - analyse_js:
+          requires:
+            - checkout_code
+      - build_android_debug:
+          requires:
+            - analyse_js
+      - build_android_release:
+          requires:
+            - analyse_js
+            - analyse_js
+  version: 2
+
+
+#    # Build the iOS app in release mode and do not run tests
+#    - rn/ios_build:
+#        name: build_ios_release
+#        project_path: ios/Example.xcodeproj
+#        device: "iPhone X"
+#        build_configuration: Release
+#        scheme: Example
+#        requires:
+#          - analyse_js
+#    #
+#    #      # Build and test the iOS app in release mode
+#    - rn/ios_build_and_test:
+#        project_path: "ios/Example.xcodeproj"
+#        device: "iPhone X"
+#        build_configuration: "Release"
+#        scheme: "Example"
+#        detox_configuration: "ios.sim.release"
+#        requires:
+#          - analyse_js
