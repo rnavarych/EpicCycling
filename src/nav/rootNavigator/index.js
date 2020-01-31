@@ -7,7 +7,6 @@ import { AuthStackNavigator } from "../authStack";
 import { appStackNavigationOptions, authStackNavigatorOptions } from "../../utils/navigations";
 
 export const createRootNavigator = (isAuth) => {
-  console.log(isAuth)
   return createAppContainer(
     createStackNavigator({
       [APP_STACK]: {

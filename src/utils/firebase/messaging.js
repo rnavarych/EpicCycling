@@ -2,7 +2,6 @@ import firebase from "react-native-firebase";
 
 export function firebaseNotifications() {
   return firebase.notifications().onNotification((notification) => {
-    console.log(notification)
     const {title, body, notificationId} = notification;
     const localNotification = new firebase.notifications.Notification({
       sound: "default",
