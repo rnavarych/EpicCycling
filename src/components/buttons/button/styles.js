@@ -11,6 +11,18 @@ const styles = StyleSheet.create({
   text: {
     color: theme.primaryText,
     fontSize: 16
+  },
+  disableButton: {
+    backgroundColor: theme.primaryDisabled,
+  },
+  buttonContent: {
+    flexDirection: 'row'
+  },
+  progress: {
+    position: 'absolute',
+    top:0,
+    bottom: 0,
+    right: '-25%'
   }
 })
 

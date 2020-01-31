@@ -5,6 +5,7 @@ import images from "../../../configs/images";
 import DrawerItems from "../drawerItem";
 import { theme } from "../../../constants/theme";
 import { strings } from '../../../I18n'
+import { logOut } from "../../../utils/firebase/auth";
 
 function CustomDrawerComponent({props}) {
 
@@ -13,15 +14,10 @@ function CustomDrawerComponent({props}) {
     // props.navigation.navigate()
   }
 
-  const navigateToLogout = () => {
-    //todo
-    // props.navigation.navigate()
-  }
-
   const profileItem = () => (
     <TouchableHighlight
       underlayColor={ theme.primaryUnderlay }
-      onPress={navigateToProfile}
+      onPress={ navigateToProfile }
     >
       <View style={ styles.profileItem }>
         <Image source={ images.profile } style={ styles.profileIcon }/>
@@ -38,17 +34,17 @@ function CustomDrawerComponent({props}) {
 
   const logoutItem = () => (
     <TouchableHighlight
-      onPress={navigateToLogout}
+      onPress={ logOut }
       underlayColor={ theme.primary }
-      style={styles.touchableArea}>
-      <Text style={styles.logout}>{strings('buttons.logout')}</Text>
+      style={ styles.touchableArea }>
+      <Text style={ styles.logout }>{ strings('buttons.logout') }</Text>
     </TouchableHighlight>
   )
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={ styles.container }>
       { profileItem() }
-      <View style={styles.drawerContent}>
+      <View style={ styles.drawerContent }>
         <DrawerItems { ...props }/>
         { logoutItem() }
       </View>

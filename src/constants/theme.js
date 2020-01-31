@@ -1,5 +1,6 @@
 const defaultTheme = {
   primary: '#462783',
+  primaryDisabled: 'rgba(70,39,131,0.7)',
   primaryUnderlay: '#332767',
   primaryText: '#F1F7ED',
   tintColor: '#F1F7ED',

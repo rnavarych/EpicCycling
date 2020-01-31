@@ -1,16 +1,28 @@
 import React from 'react';
-import { TouchableHighlight, Text } from 'react-native';
+import { TouchableHighlight, Text, View, Platform, ActivityIndicator } from 'react-native';
 import styles from './styles';
 import { theme } from "../../../constants/theme";
 
-function Button({style, onPress, label}) {
+const INDICATOR_SIZE_ANDROID = 32;
+const INDICATOR_SIZE_IOS = 'small';
+
+function Button({style, onPress, label, disable, progressIndicator}) {
   return (
     <TouchableHighlight
-      style={[styles.container, style]}
+      style={ [styles.container, disable && styles.disableButton, style] }
       underlayColor={ theme.primaryUnderlay }
-      onPress={onPress}
+      onPress={ disable ? null : onPress }
     >
-      <Text style={styles.text}>{label}</Text>
+      <View style={ styles.buttonContent }>
+        <Text style={ styles.text }>{ label }</Text>
+        { progressIndicator &&
+        <ActivityIndicator
+          style={styles.progress}
+          color={theme.primaryText}
+          size={ Platform.OS === 'ios' ? INDICATOR_SIZE_IOS : INDICATOR_SIZE_ANDROID }
+        />
+        }
+      </View>
     </TouchableHighlight>
   )
 }

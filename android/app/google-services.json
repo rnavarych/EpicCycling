@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "221320279729",
+    "firebase_url": "https://epiccycling-20dc6.firebaseio.com",
+    "project_id": "epiccycling-20dc6",
+    "storage_bucket": "epiccycling-20dc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221320279729:android:7176fd45a319decf865490",
+        "android_client_info": {
+          "package_name": "com.epiccycling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221320279729-e2l6e4ab57ikq968osuom807u5p9fnn4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL1LFoCDzbJHCWa4-OpM_ypcqdKZ-16Fg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221320279729-e2l6e4ab57ikq968osuom807u5p9fnn4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "221320279729-qs7e9j9t4pukbm65kv0o09mf1p0rotrr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.EpicCycling"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

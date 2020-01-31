@@ -1,47 +1,52 @@
 import React from 'react'
-import { Provider } from 'react-redux';
-
 import { createRootNavigator } from './nav/rootNavigator'
-import { configureStore } from './store'
-import AsyncStorage from '@react-native-community/async-storage';
-import { FIRST_LAUNCH } from "./constants/asyncStorage";
+import { iosNotificationsPermissions } from "./utils/permissons";
+import { changeTokenListener, firebaseNotifications, getAndSaveFirebaseToken } from "./utils/firebase/messaging";
+import { isLoggedin, onAuthStateChanged } from "./utils/firebase/auth";
 
-const store = configureStore()
 
-class App extends React.PureComponent {
+class App extends React.Component {
+
+  constructor() {
+    super();
+    this.notificationListener = firebaseNotifications();
+    this.firebaseChangeTokenListener = () => {
+    };
+    this.isLoggedin = user => this.setState({user});
+  }
 
   state = {
-    firstLaunch: null
+    user: null
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !!this.state.user !== !!nextState.user;
   }
 
   componentDidMount() {
-    this.checkFirstLaunch()
+    iosNotificationsPermissions().then(permission => {
+      if (permission) {
+        getAndSaveFirebaseToken()
+        this.firebaseChangeTokenListener = changeTokenListener()
+      }
+    });
+    onAuthStateChanged(this.isLoggedin);
+    isLoggedin(this.isLoggedin);
   }
 
-  checkFirstLaunch = () => {
-    AsyncStorage.getItem(FIRST_LAUNCH).then(value => {
-      if (value === null) {
-        AsyncStorage.setItem(FIRST_LAUNCH, FIRST_LAUNCH);
-        this.setState({firstLaunch: true});
-      } else {
-        this.setState({firstLaunch: false});
-      }
-    })
-  };
+  componentWillUnmount() {
+    this.notificationListener();
+    this.firebaseChangeTokenListener();
+  }
 
   render() {
-    if (this.state.firstLaunch === null) {
-      return null
-    }
-    const RootNavigator = createRootNavigator(true)
+    const RootNavigator = createRootNavigator(!!this.state.user);
 
     return (
-      <Provider store={store}>
-        <RootNavigator />
-      </Provider>
+      <RootNavigator/>
     )
   }
 }
 
-export default App;
+export default App
 

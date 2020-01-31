@@ -6,4 +6,8 @@ export const savePhoneNumber = (code, phone) => {
     code,
     phone
   }
+};
+
+export const saveUser = (user) => {
+
 }

@@ -22,6 +22,10 @@ const styles = StyleSheet.create({
     color: theme.text,
     fontWeight: '700'
   },
+  emptyPhoneText: {
+    color: theme.disabled,
+    fontWeight: '700'
+  },
   clickArea: {
     padding: 10,
     marginRight: -20

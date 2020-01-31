@@ -2,6 +2,7 @@ import React from "react";
 import { Keyboard, Platform, SafeAreaView } from 'react-native';
 import {theme} from '../constants/theme'
 import { EMPTY_STRING } from "../constants/constants";
+import Snackbar from "react-native-snackbar";
 
 export function withSafeAreaView(Component, backgroundColor) {
   return (props) => {
@@ -24,4 +25,14 @@ export function keyBoardHideListener(action) {
 
 export function getThemeByValue(value) {
   return value === EMPTY_STRING ? theme.placeholder : theme.filledInput
-};
+}
+
+export function showSnackBar(message, props) {
+  //todo use props
+  Snackbar.show({
+    text: message,
+    backgroundColor: theme.primary,
+    textColor: theme.primaryText,
+    duration: Snackbar.LENGTH_SHORT,
+  });
+}

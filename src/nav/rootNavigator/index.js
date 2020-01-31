@@ -6,7 +6,8 @@ import { APP_STACK, AUTH_STACK } from "../../constants/routes";
 import { AuthStackNavigator } from "../authStack";
 import { appStackNavigationOptions, authStackNavigatorOptions } from "../../utils/navigations";
 
-export const createRootNavigator = (firstLaunch) => {
+export const createRootNavigator = (isAuth) => {
+  console.log(isAuth)
   return createAppContainer(
     createStackNavigator({
       [APP_STACK]: {
@@ -18,7 +19,7 @@ export const createRootNavigator = (firstLaunch) => {
         navigationOptions: authStackNavigatorOptions
       }
     }, {
-      initialRouteName: firstLaunch ? AUTH_STACK : APP_STACK,
+      initialRouteName: isAuth ? APP_STACK : AUTH_STACK,
     })
   )
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* EpicCyclingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* EpicCyclingTests.m */; };
+		09C7729F23E2ED3500AC98C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09C7729E23E2ED3500AC98C8 /* GoogleService-Info.plist */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -45,6 +46,8 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* EpicCyclingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EpicCyclingTests.m; sourceTree = "<group>"; };
 		071DF2EA16E73712ED551085 /* Pods-EpicCycling.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EpicCycling.release.xcconfig"; path = "Target Support Files/Pods-EpicCycling/Pods-EpicCycling.release.xcconfig"; sourceTree = "<group>"; };
+		09C7729E23E2ED3500AC98C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		09C772A023E2F51900AC98C8 /* EpicCycling.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = EpicCycling.entitlements; path = EpicCycling/EpicCycling.entitlements; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* EpicCycling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EpicCycling.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = EpicCycling/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = EpicCycling/AppDelegate.m; sourceTree = "<group>"; };
@@ -125,6 +128,7 @@
 		13B07FAE1A68108700A75B9A /* EpicCycling */ = {
 			isa = PBXGroup;
 			children = (
+				09C772A023E2F51900AC98C8 /* EpicCycling.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -148,7 +152,6 @@
 				E1D6E7A82D390B247E88B4A2 /* Pods-EpicCyclingTests.debug.xcconfig */,
 				1553F2CA512A8C6830D3A9B3 /* Pods-EpicCyclingTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -175,6 +178,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				09C7729E23E2ED3500AC98C8 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* EpicCycling */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* EpicCyclingTests */,
@@ -293,6 +297,17 @@
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = CQNPNTK3D7;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
@@ -339,6 +354,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				09C7729F23E2ED3500AC98C8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,8 +661,10 @@
 			baseConfigurationReference = 5C2C62FF7A29AD0403B33382 /* Pods-EpicCycling.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = EpicCycling/EpicCycling.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = CQNPNTK3D7;
 				INFOPLIST_FILE = EpicCycling/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -654,7 +672,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.softteco.EpicCycling;
 				PRODUCT_NAME = EpicCycling;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -665,7 +683,9 @@
 			baseConfigurationReference = 071DF2EA16E73712ED551085 /* Pods-EpicCycling.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = EpicCycling/EpicCycling.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CQNPNTK3D7;
 				INFOPLIST_FILE = EpicCycling/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -673,7 +693,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.softteco.EpicCycling;
 				PRODUCT_NAME = EpicCycling;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

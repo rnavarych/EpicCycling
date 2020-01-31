@@ -6,6 +6,7 @@
     "welcomeButton": "Start",
     "resendSms": "Click to resend sms",
     "registration": "Registration",
+    "getCode": "Get Code",
     "updatePhone": "Update phone"
   },
   "descriptions": {
@@ -29,5 +30,8 @@
   },
   "placeholders": {
     "code": "Code"
+  },
+  "notifications": {
+    "sentMessage": "Message sent to your phone number"
   }
 }

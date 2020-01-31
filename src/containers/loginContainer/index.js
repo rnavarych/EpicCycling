@@ -12,25 +12,49 @@ import * as routes from '../../constants/routes'
 import { savePhoneNumber } from "../../actions/registration";
 import { connect } from "react-redux";
 import { EMPTY_STRING } from "../../constants/constants";
-import { getThemeByValue } from "../../utils/utils";
+import { getThemeByValue, showSnackBar } from "../../utils/utils";
+import { signInWithPhone } from "../../utils/firebase/auth";
 
 class LoginScreen extends PureComponent {
 
   state = {
     underlineColor: theme.placeholder,
-    codeValue: EMPTY_STRING
+    codeValue: EMPTY_STRING,
+    confirmation: false,
+    pressRegistration: false,
+    error: null
   };
 
-  resend = () => {
-    //todo resend action
-  };
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.confirmation && !prevState.confirmation) {
+      if (!!this.state.error) {
+        showSnackBar(this.state.error);
+      } else {
+        showSnackBar(strings('notifications.sentMessage'));
+      }
+      this.setState({confirmation: false, error: null})
+    }
+  }
 
   editPhone = () => {
     this.props.navigation.navigate(routes.EDIT_PHONE_SCREEN)
   };
 
   registration = () => {
-    //todo registration
+    try {
+      this.confirmation.confirm(this.state.codeValue);
+      this.setState({pressRegistration: true})
+    } catch (e) {
+      console.error(e);
+      this.setState({pressRegistration: false})
+    }
+  };
+
+  getCode = async () => {
+    const {code, phone} = this.props;
+    this.confirmation = await signInWithPhone(`${code}${phone}`)
+      .catch(error=> this.setState({ error: error.message}))
+    if (this.confirmation !== null) this.setState({confirmation: true})
   };
 
   changeCode = (code) => {
@@ -54,9 +78,10 @@ class LoginScreen extends PureComponent {
   );
 
   phoneNumberComponent = (code, phone) => {
-    const phoneNumber = code === EMPTY_STRING && phone === EMPTY_STRING ? strings('descriptions.emptyPhone') : `${ code } ${ phone }`;
+    const isEmptyPhoneOrCode = code === EMPTY_STRING && phone === EMPTY_STRING;
+    const phoneNumber = isEmptyPhoneOrCode ? strings('descriptions.emptyPhone') : `${ code } ${ phone }`;
     return <View style={ styles.phoneContainer }>
-      <Text style={ styles.phoneText }>{ phoneNumber }</Text>
+      <Text style={ isEmptyPhoneOrCode ? styles.emptyPhoneText : styles.phoneText }>{ phoneNumber }</Text>
       <TouchableOpacity
         style={ styles.clickArea }
         onPress={ this.editPhone }
@@ -77,9 +102,10 @@ class LoginScreen extends PureComponent {
           onChangeText={ this.changeCode }
         />
         <Button
+          progressIndicator={ this.state.pressRegistration }
           style={ styles.indentation }
-          onPress={ this.registration }
-          label={ strings('buttons.registration') }
+          onPress={ this.state.confirmation ? this.registration : this.getCode }
+          label={ this.state.confirmation ? strings('buttons.registration') : strings('buttons.getCode') }
         />
         <InformationText
           style={ styles.text }
@@ -87,7 +113,7 @@ class LoginScreen extends PureComponent {
         />
         <ClickableText
           text={ strings('buttons.resendSms') }
-          onPress={ this.resend }
+          onPress={ this.getCode }
         />
       </View>
     );
