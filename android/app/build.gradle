@@ -195,8 +195,11 @@ task downloadDependencies() {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation project(path: ":@react-native-firebase_app")
-    implementation project(path: ":@react-native-firebase_auth")
+    implementation "com.google.android.gms:play-services-base:17.1.0"
+    implementation "com.google.firebase:firebase-core:17.2.2"
+    implementation "com.google.firebase:firebase-auth:19.2.0"
+    implementation "com.google.firebase:firebase-messaging:20.1.0"
+    implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
