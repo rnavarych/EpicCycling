@@ -3,8 +3,8 @@ import { View, Text, Platform, TouchableOpacity } from 'react-native'
 import { Callout, CalloutSubview } from 'react-native-maps'
 
 import styles from './styles'
-import { strings } from '../../I18n'
-import * as routes from '../../constants/routes'
+import { strings } from '../../../I18n'
+import * as routes from '../../../constants/routes'
 
 const isIOS = Platform.OS === 'ios'
 

@@ -7,4 +7,6 @@ export default {
   down_arrow: require('../../assets/images/down_arrow.png'),
   pencil: require('../../assets/images/pencil.png'),
   close: require('../../assets/images/close.png'),
+  pin: require('../../assets/images/pin.png'),
+  info: require('../../assets/images/info.png'),
 }
