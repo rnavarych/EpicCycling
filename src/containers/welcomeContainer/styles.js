@@ -2,10 +2,17 @@ import { StyleSheet } from 'react-native';
 import { theme } from "../../constants/theme";
 
 const styles = StyleSheet.create({
+  content: {
+    alignItems: 'center'
+  },
+  splash: {
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center'
+  },
   container: {
     flex: 1,
     backgroundColor: theme.primary,
-    alignItems: 'center',
     marginVertical: 20
   },
   logo: {

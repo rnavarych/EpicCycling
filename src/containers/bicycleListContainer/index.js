@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import { View, FlatList, Text } from 'react-native'
+import { View, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 
 import { getListOfBicycles } from '../../actions/bicycles'

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import { View, SafeAreaView, Image, Text, TouchableHighlight } from 'react-native';
 import styles from './styles';
 import images from "../../../configs/images";
@@ -6,18 +6,28 @@ import DrawerItems from "../drawerItem";
 import { theme } from "../../../constants/theme";
 import { strings } from '../../../I18n'
 import { logOut } from "../../../utils/firebase/auth";
+import { clearUser } from "../../../actions/registration";
+import { connect } from "react-redux";
+import AsyncStorage from '@react-native-community/async-storage';
+import { USER_INFO } from "../../../constants/asyncStorage";
 
-function CustomDrawerComponent({props}) {
+class CustomDrawerComponent extends PureComponent {
 
-  const navigateToProfile = () => {
+  navigateToProfile = () => {
     //todo
     // props.navigation.navigate()
   }
 
-  const profileItem = () => (
+  logout = () => {
+    AsyncStorage.removeItem(USER_INFO)
+    logOut()
+    this.props.clearUser()
+  };
+
+  profileItem = () => (
     <TouchableHighlight
       underlayColor={ theme.primaryUnderlay }
-      onPress={ navigateToProfile }
+      onPress={ this.navigateToProfile }
     >
       <View style={ styles.profileItem }>
         <Image source={ images.profile } style={ styles.profileIcon }/>
@@ -32,25 +42,34 @@ function CustomDrawerComponent({props}) {
     </TouchableHighlight>
   );
 
-  const logoutItem = () => (
+  logoutItem = () => (
     <TouchableHighlight
-      onPress={ logOut }
+      onPress={ this.logout }
       underlayColor={ theme.primary }
       style={ styles.touchableArea }>
       <Text style={ styles.logout }>{ strings('buttons.logout') }</Text>
     </TouchableHighlight>
   )
 
-  return (
-    <SafeAreaView style={ styles.container }>
-      { profileItem() }
-      <View style={ styles.drawerContent }>
-        <DrawerItems { ...props }/>
-        { logoutItem() }
-      </View>
-
-    </SafeAreaView>
-  )
+  render() {
+    return (
+      <SafeAreaView style={ styles.container }>
+        { this.profileItem() }
+        <View style={ styles.drawerContent }>
+          <DrawerItems { ...this.props.props }/>
+          { this.logoutItem() }
+        </View>
+      </SafeAreaView>
+    )
+  }
 }
 
-export default CustomDrawerComponent;
+const mapStateToProps = ({registration: {userInfo, user}}) => ({
+  userInfo, user
+});
+
+const mapDispatchToProps = dispatch => ({
+  clearUser: () => dispatch(clearUser()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomDrawerComponent)

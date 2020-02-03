@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     marginTop: 20,
-    width: '100%'
   }
 })
 

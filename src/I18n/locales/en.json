@@ -23,13 +23,16 @@
     "registrationFirstLabel": "registration text registration text test test",
     "registrationSecondLabel": "registration text registration text test text registration text test test ",
     "resendSms": "Resend sms click",
-    "emptyPhone": "Enter phone number"
+    "emptyPhone": "Enter phone number",
+    "userInformation": "User Information"
   },
   "screenTitles": {
     "sms": "SMS"
   },
   "placeholders": {
-    "code": "Code"
+    "code": "Code",
+    "username": "User name",
+    "useremail": "User email"
   },
   "notifications": {
     "sentMessage": "Message sent to your phone number"

@@ -1,1 +1,1 @@
-export const FIRST_LAUNCH = 'FIRST_LAUNCH';
+export const USER_INFO = 'userInfo';

@@ -20,15 +20,7 @@ export const authStackNavigatorOptions = ({navigation}) => ({
   headerShown: false
 })
 
-export const loginScreenNavigationOptions = () => ({
-  title: strings('screenTitles.sms'),
-  headerBackTitleVisible: false,
-  headerTitleAlign: 'center',
-  headerTintColor: theme.primaryText,
-  headerStyle: {
-    backgroundColor: theme.primary
-  }
-})
+export const loginScreenNavigationOptions = () => baseHeaderStyle('screenTitles.sms');
 
 export const editPhoneOptions = ({navigation}) => ({
   title: 'Edit Phone',
@@ -36,6 +28,18 @@ export const editPhoneOptions = ({navigation}) => ({
   headerTitleAlign: 'center',
   headerTintColor: theme.primaryText,
   headerRight: () => <HeaderRightButton onPress={() => navigation.goBack()} icon={images.close}/>,
+  headerStyle: {
+    backgroundColor: theme.primary
+  }
+})
+
+export const basicUserInfoOptions = () => baseHeaderStyle('screenTitles.sms')
+
+const baseHeaderStyle = (title) => ({
+  title: strings('screenTitles.sms'),
+  headerBackTitleVisible: false,
+  headerTitleAlign: 'center',
+  headerTintColor: theme.primaryText,
   headerStyle: {
     backgroundColor: theme.primary
   }

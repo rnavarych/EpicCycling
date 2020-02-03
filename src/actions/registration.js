@@ -8,6 +8,22 @@ export const savePhoneNumber = (code, phone) => {
   }
 };
 
-export const saveUser = (user) => {
+export const saveUserInfo = (user) => {
+  return {
+    type: types.SAVE_BASE_USER_INFO,
+    user
+  }
+};
 
+export const saveUser = (user) => {
+  return {
+    type: types.SAVE_USER,
+    user
+  }
+};
+
+export const clearUser = () => {
+  return {
+    type: types.CLEAR_USER
+  }
 }

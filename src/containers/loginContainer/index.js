@@ -9,11 +9,12 @@ import { strings } from "../../I18n";
 import Button from "../../components/buttons/button";
 import UnderlineInput from "../../components/inputs/underlineInput";
 import * as routes from '../../constants/routes'
-import { savePhoneNumber } from "../../actions/registration";
+import { savePhoneNumber, saveUser } from "../../actions/registration";
 import { connect } from "react-redux";
 import { EMPTY_STRING } from "../../constants/constants";
 import { getThemeByValue, showSnackBar } from "../../utils/utils";
 import { signInWithPhone } from "../../utils/firebase/auth";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class LoginScreen extends PureComponent {
 
@@ -26,13 +27,11 @@ class LoginScreen extends PureComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.confirmation && !prevState.confirmation) {
-      if (!!this.state.error) {
-        showSnackBar(this.state.error);
-      } else {
-        showSnackBar(strings('notifications.sentMessage'));
-      }
-      this.setState({confirmation: false, error: null})
+    if (!!this.state.error && !!!prevState.error) {
+      showSnackBar(this.state.error);
+      this.setState({error: null})
+    } else if (this.state.confirmation && !prevState.confirmation) {
+      showSnackBar(strings('notifications.sentMessage'));
     }
   }
 
@@ -41,20 +40,21 @@ class LoginScreen extends PureComponent {
   };
 
   registration = () => {
-    try {
-      this.confirmation.confirm(this.state.codeValue);
-      this.setState({pressRegistration: true})
-    } catch (e) {
-      console.error(e);
-      this.setState({pressRegistration: false})
-    }
+    this.setState({pressRegistration: true})
+    this.confirmation.confirm(this.state.codeValue)
+      .then(this.registrationSuccess)
+      .catch(error => this.setState({ error: error.message, pressRegistration: false}))
   };
+
+  registrationSuccess = () => {
+    this.props.navigation.navigate(routes.BASIC_USER_INFO_SCREEN)
+  }
 
   getCode = async () => {
     const {code, phone} = this.props;
     this.confirmation = await signInWithPhone(`${code}${phone}`)
-      .catch(error=> this.setState({ error: error.message}))
-    if (this.confirmation !== null) this.setState({confirmation: true})
+      .catch(error=> this.setState({ confirmation: false, error: error.message}))
+    if (this.confirmation !== undefined) this.setState({confirmation: true})
   };
 
   changeCode = (code) => {
@@ -93,7 +93,9 @@ class LoginScreen extends PureComponent {
 
   render() {
     return (
-      <View style={ styles.container }>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        contentContainerStyle={ styles.container }>
         { this.registrationInformationComponent() }
         { this.phoneNumberComponent(this.props.code, this.props.phone) }
         <UnderlineInput
@@ -115,7 +117,7 @@ class LoginScreen extends PureComponent {
           text={ strings('buttons.resendSms') }
           onPress={ this.getCode }
         />
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -126,7 +128,7 @@ const mapStateToProps = ({registration: {code, phone}}) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  savePhone: (code, phone) => dispatch(savePhoneNumber(code, phone))
+  savePhone: (code, phone) => dispatch(savePhoneNumber(code, phone)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
