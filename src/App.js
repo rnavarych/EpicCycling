@@ -48,7 +48,6 @@ class App extends React.Component {
   }
 
   render() {
-    //todo add splash screen
     const RootNavigator = createRootNavigator(!!this.props.user && !!this.props.userInfo);
     return (
       <RootNavigator/>
