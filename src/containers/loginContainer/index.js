@@ -48,6 +48,7 @@ class LoginScreen extends PureComponent {
 
   registrationSuccess = () => {
     this.props.navigation.navigate(routes.BASIC_USER_INFO_SCREEN)
+    this.setState({pressRegistration: false})
   }
 
   getCode = async () => {

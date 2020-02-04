@@ -9,4 +9,5 @@ export default {
   close: require('../../assets/images/close.png'),
   pin: require('../../assets/images/pin.png'),
   info: require('../../assets/images/info.png'),
+  scan: require('../../assets/images/scan.png'),
 }

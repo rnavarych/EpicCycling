@@ -2,12 +2,14 @@ import React from 'react'
 import { Marker } from 'react-native-maps'
 
 import DefaultCallout from '../defaultCallout';
-import images from "../../../configs/images";
+import images from "../../../../configs/images";
 
 const DefaultMarker = (props) => {
-  const { station, navigation } = props
+  const { station, navigation, index, selectAction } = props
   return (
     <Marker
+      tracksViewChanges={false}
+      onPress={() => selectAction(index) }
       coordinate={{
         latitude: parseFloat(station.latitude),
         longitude: parseFloat(station.longitude)

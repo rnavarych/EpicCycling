@@ -19,7 +19,6 @@ class App extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(this.props)
     return !!this.props.user && !!this.props.userInfo !== !!nextProps.userInfo;
   }
 

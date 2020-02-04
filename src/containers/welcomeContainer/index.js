@@ -14,7 +14,11 @@ class WelcomeScreen extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({splashScreenVisible: true}), 1000)
+    this.splashTimeout =  setTimeout(() => this.setState({splashScreenVisible: true}), 1000)
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.splashTimeout)
   }
 
   content = () => (
