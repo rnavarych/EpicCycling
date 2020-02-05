@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRootNavigator } from './nav/rootNavigator'
-import { iosNotificationsPermissions } from "./utils/permissons";
+import { iosNotificationsPermissions } from "./utils/permissions";
 import { changeTokenListener, firebaseNotifications, getAndSaveFirebaseToken } from "./utils/firebase/messaging";
 import { isLoggedin, onAuthStateChanged } from "./utils/firebase/auth";
 import AsyncStorage from '@react-native-community/async-storage';

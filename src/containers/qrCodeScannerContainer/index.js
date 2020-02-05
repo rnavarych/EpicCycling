@@ -5,6 +5,7 @@ import styles from './styles';
 class QRCodeScannerScreen extends PureComponent {
 
   render() {
+    //todo in development
     return (
       <View>
       </View>

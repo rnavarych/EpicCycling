@@ -19,7 +19,7 @@
     "lodash.memoize": "4.1.2",
     "react": "16.9.0",
     "react-native": "0.61.5",
-    "react-native-camera": "^3.16.0",
+    "react-native-camera": "3.16.0",
     "react-native-firebase": "5.5.7",
     "react-native-gesture-handler": "1.5.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
