@@ -10,4 +10,5 @@ export const BASIC_USER_INFO_SCREEN = 'BasicUserInformationScreen';
 
 //app
 export const MAP_SCREEN = 'MapScreen';
+export const QR_CODE_SCANNER_SCREEN = 'QRCodeScannerScreen';
 export const STATION_INFO_SCREEN = 'BicycleListScreen';

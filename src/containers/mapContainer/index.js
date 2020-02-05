@@ -15,6 +15,8 @@ import images from "../../configs/images";
 import { theme } from '../../constants/theme';
 import { strings } from "../../I18n";
 import FloatingIcon from "../../components/buttons/floatingIcon";
+import Geolocation from '@react-native-community/geolocation';
+import * as routers from '../../constants/routes'
 
 class MapContainer extends PureComponent {
 
@@ -32,11 +34,9 @@ class MapContainer extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.selectedIndex !== -1 && prevState.selectedIndex !== this.state.selectedIndex) {
-      if (this.state.selectPin && !prevState.selectPin) {
-        this.scrollTimeout = setTimeout(() => this.scrollToIndex(), 500)
-      } else {
-        this.scrollToIndex()
-      }
+      this.state.selectPin && !prevState.selectPin
+        ? this.scrollTimeout = setTimeout(() => this.scrollToIndex(), 500)
+        : this.scrollToIndex()
     }
   }
 
@@ -52,17 +52,24 @@ class MapContainer extends PureComponent {
     clearTimeout(this.scrollTimeout);
   }
 
-  scanQRCode = () => {
-    //todo scan qr code
-  };
+  scanQRCode = () => this.props.navigation.navigate(routers.QR_CODE_SCANNER_SCREEN);
 
-  getCurrentLocation = () => {
-    //todo current location
-  };
+  getCurrentLocation = () => Geolocation.getCurrentPosition(position =>
+      this.setState({
+        region: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: locations.sanFrancisco.latitudeDelta,
+          longitudeDelta: locations.sanFrancisco.longitudeDelta
+        }
+      })
+  );
 
   showInfo = () => {
     //todo show info
-  }
+  };
+
+  tapOnMap = ({nativeEvent}) => nativeEvent.action !== ACTION_MARKER_PRESS && this.setState({selectPin: false});
 
   scrolledPinList = () => (
     <Animated.ScrollView
@@ -111,7 +118,8 @@ class MapContainer extends PureComponent {
     return (
       <View style={ styles.container }>
         <MapView
-          onPress={ ({nativeEvent}) => nativeEvent.action !== ACTION_MARKER_PRESS && this.setState({selectPin: false})}
+          region={ this.state.region }
+          onPress={ this.tapOnMap }
           ref={ map => this.mapView = map }
           onRegionChangeComplete={ region => this.setState({region}) }
           style={ {...StyleSheet.absoluteFillObject} }
