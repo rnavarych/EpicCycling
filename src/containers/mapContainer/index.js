@@ -17,6 +17,7 @@ import { strings } from "../../I18n";
 import FloatingIcon from "../../components/buttons/floatingIcon";
 import Geolocation from '@react-native-community/geolocation';
 import * as routers from '../../constants/routes'
+import { showSnackBar } from "../../utils/utils";
 
 class MapContainer extends PureComponent {
 
@@ -54,16 +55,21 @@ class MapContainer extends PureComponent {
 
   scanQRCode = () => this.props.navigation.navigate(routers.QR_CODE_SCANNER_SCREEN);
 
-  getCurrentLocation = () => Geolocation.getCurrentPosition(position =>
-      this.setState({
-        region: {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          latitudeDelta: locations.sanFrancisco.latitudeDelta,
-          longitudeDelta: locations.sanFrancisco.longitudeDelta
-        }
-      })
+  getCurrentLocation = () => Geolocation.getCurrentPosition(
+    this.setRegionToCurrentLocation,
+    error => showSnackBar(error.message)
   );
+
+  setRegionToCurrentLocation = (region) => {
+    this.setState({
+      region: {
+        latitude: region.coords.latitude,
+        longitude: region.coords.longitude,
+        latitudeDelta: locations.sanFrancisco.latitudeDelta,
+        longitudeDelta: locations.sanFrancisco.longitudeDelta
+      }
+    })
+  };
 
   showInfo = () => {
     //todo show info
