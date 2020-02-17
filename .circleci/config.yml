@@ -1,85 +1,211 @@
-version: 2.1
-ios:
-  macos:
-    xcode: 9.4.1
-  working_directory: ~/react-native
-  shell: /bin/bash --login -o pipefail
-  steps:
-    - checkout:
-        path: ~/react-native
-    - attach_workspace:
-        at: ~/react-native
-    - run:
-        name: set Ruby version
-        command: echo "ruby-2.4" > ~/.ruby-version
-    - restore_cache:
-        key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-    - restore_cache:
-        key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-    - run:
-        command: yarn install
-    - save_cache:
-        key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-        paths:
-          - ~/.cache/yarn
-    - save_cache:
-        key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-        paths:
-          - node_modules
-    - persist_to_workspace:
-        root: ~/react-native
-        paths:
-          - node_modules
-    - restore_cache:
-        key: bundle-ios-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-    - run:
-        command: bundle install --path vendor/bundle
-        working_directory: ios
-    - save_cache:
-        key: bundle-ios-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-        paths:
-          - ios/vendor/bundle
-    - run:
-        name: Override ENV vars for branch
-        command: |
-          cat << 'EOF' >> /tmp/setEnvVars.js
-          #!/usr/bin/env node
-          const args = process.argv.slice(2);
-          const branch = args[0];
-          if (!branch) return;
+version: 2
+jobs:
+  node:
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/react-native
+    steps:
+      - checkout
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+      - run:
+          command: yarn install
+      - save_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/react-native
+          paths:
+            - node_modules
+      - run:
+          name: jest tests
+          command: |
+            mkdir -p reports/junit
+            yarn test:ci
+          environment:
+            JEST_JUNIT_OUTPUT: reports/junit/junit.xml
+      - store_test_results:
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
+  android:
+    docker:
+      - image: circleci/android:api-27-node8-alpha
+    working_directory: ~/react-native
+    steps:
+      - checkout:
+          path: ~/react-native
+      - attach_workspace:
+          at: ~/react-native
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+      - run:
+          command: yarn install
+      - save_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/react-native
+          paths:
+            - node_modules
+      - restore_cache:
+          key: bundle-android-v1-{{ checksum "android/Gemfile.lock" }}-{{ arch }}
+      - run:
+          command: bundle install --path vendor/bundle
+          working_directory: android
+      - save_cache:
+          key: bundle-android-v1-{{ checksum "android/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - android/vendor/bundle
+      - run:
+          name: Check MD5 on files
+          command: "md5sum android/build.gradle\nmd5sum android/app/build.gradle            \ncat android/app/build.gradle | sed -n -e '/dependencies/,$p' > android.app.build.gradle.deps\n"
+      - restore_cache:
+          key: android-jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+          working_directory: android
+      - save_cache:
+          key: android-jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
+          paths:
+            - ~/.gradle
+      - run:
+          name: Decode Keystore
+          working_directory: android
+          command: |
+            echo $ANDROID_ENCODED_KEYSTORE | base64 --decode >> android.keystore
+            # copy 2x for now... RN and gradle both need it?
+            echo $ANDROID_ENCODED_KEYSTORE | base64 --decode >> app/android.keystore
+      - run:
+          name: Override ENV vars for branch
+          command: |
+            cat << 'EOF' >> /tmp/setEnvVars.js
+            #!/usr/bin/env node
+            const args = process.argv.slice(2);
+            const branch = args[0];
+            if (!branch) return;
 
-          const uppercasedBranch = branch.toUpperCase();
-          const variables = Object.keys(process.env).filter(e => e.includes(uppercasedBranch));
+            const uppercasedBranch = branch.toUpperCase();
+            const variables = Object.keys(process.env).filter(e => e.includes(uppercasedBranch));
 
-          variables.forEach((variable, index) => {
-            const newVar = variable.replace(`${uppercasedBranch}_`, '');
+            variables.forEach((variable, index) => {
+              const newVar = variable.replace(`${uppercasedBranch}_`, '');
 
-            if (process.env[variable]) {
-              process.env[newVar] = process.env[variable];
-              console.log(`adding ${variable} env var to ${newVar}`);
-            }
-          });
-          EOF
-          node /tmp/setEnvVars.js ${CIRCLE_BRANCH}
-    - run:
-        name: Create .env from vars
-        command: |
-          printf "Creating an .env file:\n"
-          printenv > .env
-          printf "\n.env created with contents:\n"
-          cat .env
-    - run:
-        name: fastlane adhoc ios
-        working_directory: ios
-        command: bundle exec fastlane adhoc build_number:${CIRCLE_BUILD_NUM}
-    - run:
-        name: Copy outputs for artifacts
-        command: |
-          mkdir -p /tmp/artifacts
-          cp ios/*.ipa /tmp/artifacts/
-          cp ios/*.dSYM* /tmp/artifacts/
-    - store_artifacts:
-        path: /tmp/artifacts
+              if (process.env[variable]) {
+                process.env[newVar] = process.env[variable];
+                console.log(`adding ${variable} env var to ${newVar}`);
+              }
+            });
+            EOF
+            node /tmp/setEnvVars.js ${CIRCLE_BRANCH}
+      - run:
+          name: Create .env from vars
+          command: |
+            printf "Creating an .env file:\n"
+            printenv > .env
+            printf "\n.env created with contents:\n"
+            cat .env
+      - store_artifacts:
+          path: android/app/build/outputs/apk
+    environment:
+      - FL_OUTPUT_DIR: output
+      - _JAVA_OPTIONS: -Xmx1500m
+  ios:
+    macos:
+      xcode: 9.4.1
+    working_directory: ~/react-native
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout:
+          path: ~/react-native
+      - attach_workspace:
+          at: ~/react-native
+      - run:
+          name: set Ruby version
+          command: echo "ruby-2.4" > ~/.ruby-version
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+      - run:
+          command: yarn install
+      - save_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/react-native
+          paths:
+            - node_modules
+      - restore_cache:
+          key: bundle-ios-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+      - run:
+          command: bundle install --path vendor/bundle
+          working_directory: ios
+      - save_cache:
+          key: bundle-ios-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - ios/vendor/bundle
+      - run:
+          name: Override ENV vars for branch
+          command: |
+            cat << 'EOF' >> /tmp/setEnvVars.js
+            #!/usr/bin/env node
+            const args = process.argv.slice(2);
+            const branch = args[0];
+            if (!branch) return;
+
+            const uppercasedBranch = branch.toUpperCase();
+            const variables = Object.keys(process.env).filter(e => e.includes(uppercasedBranch));
+
+            variables.forEach((variable, index) => {
+              const newVar = variable.replace(`${uppercasedBranch}_`, '');
+
+              if (process.env[variable]) {
+                process.env[newVar] = process.env[variable];
+                console.log(`adding ${variable} env var to ${newVar}`);
+              }
+            });
+            EOF
+            node /tmp/setEnvVars.js ${CIRCLE_BRANCH}
+      - run:
+          name: Create .env from vars
+          command: |
+            printf "Creating an .env file:\n"
+            printenv > .env
+            printf "\n.env created with contents:\n"
+            cat .env
+      - run:
+          name: fastlane adhoc ios
+          working_directory: ios
+          command: bundle exec fastlane adhoc build_number:${CIRCLE_BUILD_NUM}
+      - run:
+          name: Copy outputs for artifacts
+          command: |
+            mkdir -p /tmp/artifacts
+            cp ios/*.ipa /tmp/artifacts/
+            cp ios/*.dSYM* /tmp/artifacts/
+      - store_artifacts:
+          path: /tmp/artifacts
 workflows:
   version: 2
   main:
