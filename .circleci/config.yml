@@ -232,7 +232,7 @@ workflows:
       - build_android_release:
           requires:
             - analyse_js
-      - - rn/ios_build:
+      - rn/ios_build:
             name: build_ios_release
             project_path: ios/Example.xcodeproj
             device: "iPhone X"
