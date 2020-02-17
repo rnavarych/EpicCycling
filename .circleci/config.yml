@@ -29,9 +29,14 @@ jobs:
 workflows:
   test:
     jobs:
+      - analyse_js:
+          requires:
+            - checkout_code
       - rn/ios_build:
           name: build_ios_release
           project_path: ios/EpicCycling.xcodeproj
           device: "iPhone X"
           build_configuration: Release
           scheme: EpicCycling
+          requires:
+            - analyse_js
