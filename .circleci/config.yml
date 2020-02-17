@@ -1,61 +1,23 @@
-jobs:
-  analyse_js:
-    executor: rn/linux_js
-    steps:
-      - attach_workspace:
-          at: .
-      - rn/yarn_install
-      - run:
-          command: yarn eslint
-          name: Run ESLint
-      - run:
-          command: yarn flow
-          name: Flow
-      - run:
-          command: yarn jest
-          name: Jest
-  checkout_code:
-    executor: rn/linux_js
-    steps:
-      - checkout
-      - persist_to_workspace:
-          paths: .
-          root: .
-  fastlane_release:
-    executor: rn/linux_js
-    steps:
-      - attach_workspace:
-          at: .
-      - rn/yarn_install
-      - run:
-          command: bundle exec fastlane ios release
-          name: Run Fastlane
-orbs:
-  rn: react-native-community/react-native@1.0.0
 version: 2.1
+orbs:
+  react-native: echobind/react-native@0.1.0
 workflows:
-  test:
+  version: 2
+  main:
     jobs:
-      - checkout_code
-      - analyse_js:
+      - react-native/node:
+          name: node
+      - react-native/android:
+          name: android
           requires:
-            - checkout_code
-      - rn/ios_build:
-          build_configuration: Release
-          device: iPhone X
-          name: build_ios_release
-          project_path: ios/Example.xcodeproj
+            - node
+      - react-native/ios:
+          name: ios
           requires:
-            - analyse_js
-          scheme: Example
-      - rn/ios_build_and_test:
-          build_configuration: Release
-          detox_configuration: ios.sim.release
-          device: iPhone X
-          project_path: ios/Example.xcodeproj
-          requires:
-            - analyse_js
-          scheme: Example
-      - fastlane_release:
-          requires:
-            - rn/ios_build_and_test
+            - node
+          build:
+            - run:
+                name: fastlane adhoc ios
+                working_directory: ios
+                command: |
+                  bundle exec fastlane adhoc build_number:${CIRCLE_BUILD_NUM}
