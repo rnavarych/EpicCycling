@@ -57,6 +57,3 @@ workflows:
           requires:
             - analyse_js
           scheme: Example
-      - fastlane_ios_release:
-          requires:
-            - rn/ios_build
