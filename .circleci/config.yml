@@ -44,10 +44,6 @@ version: 2.1
 workflows:
   test:
     jobs:
-      - checkout_code
-      - analyse_js:
-          requires:
-            - checkout_code
       - rn/ios_build:
           build_configuration: Release
           device: iPhone X
