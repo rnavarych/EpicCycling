@@ -29,6 +29,7 @@ jobs:
 workflows:
   test:
     jobs:
+      - checkout_code
       - analyse_js:
           requires:
             - checkout_code
