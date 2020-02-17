@@ -29,20 +29,9 @@ jobs:
 workflows:
   test:
     jobs:
-      # Checkout the code and persist to the Workspace
-      # Note: This is a job which is defined above and not part of the Orb
-      - checkout_code
-
-      # Analyze the Javascript using ESLint, Flow, and Jest
-      # Note: This is a job which is defined above and not part of the Orb
-      - analyse_js:
-          requires:
-            - checkout_code
       - rn/ios_build:
           name: build_ios_release
           project_path: ios/EpicCycling.xcodeproj
           device: "iPhone X"
           build_configuration: Release
           scheme: EpicCycling
-          requires:
-            - analyse_js
